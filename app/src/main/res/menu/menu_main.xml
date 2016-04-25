@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="www.samnang_alex.com.applicationaccesathletique.MainActivity">
+    <item
+        android:id="@+id/iGererAthlete"
+        android:orderInCategory="100"
+        android:title="Gérer les athlètes"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/iGereEquipe"
+        android:orderInCategory="101"
+        android:title="Gérer les équipes"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/iGererEcole"
+        android:orderInCategory="102"
+        android:title="Gérer les écoles"
+        app:showAsAction="never"/>
+</menu>

@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="www.samnang_alex.com.applicationaccesathletique.CreerUneBlessureActivity"
+        tools:showIn="@layout/activity_creer_une_blessure"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/lblCoordonneDuPatient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Coordonnées du patient"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="36sp"
+            android:layout_marginTop="50dp" />
+        <AutoCompleteTextView
+            android:id="@+id/atxtNomPatient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom du patient"
+            android:textSize="24sp"/>
+        <AutoCompleteTextView
+            android:id="@+id/atxtPrenomPatient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Prénom du patient"
+            android:textSize="24sp"/>
+        <AutoCompleteTextView
+            android:id="@+id/atxtNomEquipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom de l'équipe"
+            android:textSize="24sp"/>
+        <AutoCompleteTextView
+            android:id="@+id/atxtNomEcole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom de l'école"
+            android:textSize="24sp"/>
+        <AutoCompleteTextView
+            android:id="@+id/atxtNumeroJoueur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numéro du joueur"
+            android:inputType="number"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblDateEvenement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date de l'événement"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="36sp" />
+        <TextView
+            android:id="@+id/lblTypeEvenement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Type d'évènement"
+            android:textSize="24sp" />
+        <Spinner
+            android:id="@+id/sTypeEvenement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/lblDateDeLaBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Date de la blessure"
+            android:textSize="24sp" />
+        <DatePicker
+            android:id="@+id/dpDateDeLaBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/lblDateDeRetourEntrainement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Date de retour à l'entraînement"
+            android:textSize="24sp" />
+        <DatePicker
+            android:id="@+id/dpDateDeRetourEntrainement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/lblDateDeRetourAuJeu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Date de retour au jeu"
+            android:textSize="24sp" />
+        <DatePicker
+            android:id="@+id/dpDateDeRetourAuJeu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/lblDescriptionDeLaBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description de la blessure"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="36sp" />
+        <TextView
+            android:id="@+id/lblRegionAffectee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Région affectée"
+            android:textSize="24sp" />
+        <Spinner
+            android:id="@+id/sRegionAffectee"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/regionsAffectees" />
+        <TextView
+            android:id="@+id/lblPrecisionSurLaRegionAffectee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Précision sur la région affectée"
+            android:textSize="24sp" />
+        <Spinner
+            android:id="@+id/sPrecisionSurLaRegionAffectee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/lblDescriptionDetailleeDeLaRegionBlessee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Description détaillée de la région blessée"
+            android:textSize="24sp" />
+        <LinearLayout
+            android:id="@+id/llRien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/cbxRien"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="Rien"
+                android:textSize="24sp"
+                android:checked="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llVisage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/cbxOeilDroit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Oeil droit"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxOeilGauche"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Oeil gauche"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxNez"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Nez"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxBouche"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Bouche"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxDents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Dents"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxAutre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Autre"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llColonne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/cbxMuscles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Muscles"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxLigaments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Ligaments"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxOs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Os"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxNerfs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Nerfs"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxAutre2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Autre"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llCageThoracique"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/cbxSternum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Sternum"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxCotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Côtes"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxMuscles2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Muscles"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxAutre3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Autre"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llBassin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/cbxSacrum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Sacrum"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxOsIliaque"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Os iliaque"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxCoccyx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Coccyx"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxMuscles3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Muscles"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxLigaments2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Ligaments"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxAutre4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Autre"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llOrganesInternes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/cbxFoie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Foie"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Rate"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxPancreas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Pancréas"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxRein"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Rein"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxCoeur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Coeur"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxPoumon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Poumon"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxGenitaux"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Génitaux"
+                android:textSize="24sp"/>
+            <CheckBox
+                android:id="@+id/cbxAutre5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:text="Autre"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/lblInformationsSupplementaires"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informations supplémentaires"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="36sp" />
+        <TextView
+            android:id="@+id/lblContexteDeLaBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Contexte de la blessure"
+            android:textSize="24sp" />
+        <Spinner
+            android:id="@+id/sContexteDeLaBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/lblRestrictionsAthlete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Restriction(s) de l'athète"
+            android:textSize="24sp" />
+        <CheckBox
+            android:id="@+id/cbxPratiqueAvecRestriction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:text="Pratique avec restriction"
+            android:textSize="24sp"/>
+        <CheckBox
+            android:id="@+id/cbxPartieAvecRestriction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:text="Partie avec restriction"
+            android:textSize="24sp"/>
+        <CheckBox
+            android:id="@+id/cbxAucunePratique"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:text="Aucune pratique"
+            android:textSize="24sp"/>
+        <CheckBox
+            android:id="@+id/cbxAucunePartie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:text="Aucune partie"
+            android:textSize="24sp"/>
+        <CheckBox
+            android:id="@+id/cbxAucuneRestriction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:text="Aucune restriction"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblSuiviDeLaBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Suivi de la blessure"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="36sp" />
+        <TextView
+            android:id="@+id/lblDescriptionDeLaCondition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Description de la condition ( 50 caractères )"
+            android:textSize="24sp" />
+        <EditText
+            android:id="@+id/txtDescriptionDeLaCondition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="10"
+            android:layout_margin="5dp"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblMecanismeDeBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Mécanisme de blessure ( 200 caractères )"
+            android:textSize="24sp" />
+        <EditText
+            android:id="@+id/txtMecanismeDeBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="10"
+            android:layout_margin="5dp"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblSoapS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="SOAP (S)"
+            android:textSize="24sp" />
+        <EditText
+            android:id="@+id/txtSoapS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="10"
+            android:layout_margin="5dp"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblSoapO"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="SOAP (O)"
+            android:textSize="24sp" />
+        <EditText
+            android:id="@+id/txtSoapO"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="10"
+            android:layout_margin="5dp"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblSoapA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="SOAP (A)"
+            android:textSize="24sp" />
+        <EditText
+            android:id="@+id/txtSoapA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="10"
+            android:layout_margin="5dp"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblSoapP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="SOAP (P)"
+            android:textSize="24sp" />
+        <EditText
+            android:id="@+id/txtSoapP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="10"
+            android:layout_margin="5dp"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/lblAutreCommentaireRecommandation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Autre commentaire/Recommandation ( 200 caractères )"
+            android:textSize="24sp" />
+        <EditText
+            android:id="@+id/txtAutreCommentaireRecommandation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="false"
+            android:lines="10"
+            android:layout_margin="5dp"
+            android:textSize="24sp"/>
+        <Button
+            android:id="@+id/btnSauvegarderRapport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sauvegarder rapport"
+            android:textAlignment="center"
+            android:textSize="36sp"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+</ScrollView>

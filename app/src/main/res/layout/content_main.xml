@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="www.samnang_alex.com.applicationaccesathletique.MainActivity"
+        tools:showIn="@layout/activity_main">
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textAlignment="center"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/lblCoordonneesEntreprise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/btnCreerUneBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:text="Créer une blessure"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btnAjouterUnEvenement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:text="Ajouter un événement"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btnGenererRapportPDF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:text="Générer un rapport"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btnGestionDeLaBD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:text="Gestion de la BD"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textAllCaps="false"/>
+
+
+    </LinearLayout>
+</ScrollView>

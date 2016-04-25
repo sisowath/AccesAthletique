@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ApplicationAccesAthletique</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_creer_une_blessure">CreerUneBlessureActivity</string>
+    <string-array name="regionsAffectees">
+        <item>Tête</item>
+        <item>Cou</item>
+        <item>Tronc</item>
+        <item>Membre supérieur gauche</item>
+        <item>Membre supérieur droite</item>
+        <item>Membre inférieur gauche</item>
+        <item>Membre inférieur droite</item>
+    </string-array>
+</resources>
