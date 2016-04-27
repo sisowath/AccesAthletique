@@ -24,7 +24,11 @@
             android:name=".views.CreerUneBlessureActivity"
             android:label="@string/title_activity_creer_une_blessure"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.GestionDesEcolesActivity"></activity>
+        <activity android:name=".views.GestionDesEcolesActivity" />
+        <activity
+            android:name=".views.GenererRapportTherapeuteActivity"
+            android:label="@string/title_activity_generer_rapport_therapeute"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -96,6 +96,12 @@ public class RestrictionHelper extends SQLiteOpenHelper {
         db.close();
         return cursor;
     }
+    public Cursor findById(Restriction restriction) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + restriction.getId(), null);
+        db.close();
+        return cursor;
+    }
     public int getAvailableId() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(id) FROM " + TABLE_NAME, null);

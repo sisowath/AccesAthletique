@@ -71,6 +71,7 @@ public class EvenementHelper extends SQLiteOpenHelper {
     public boolean trouverUnEvenement(Evenement evenement) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + evenement.getId(), null);
+        db.close();
         if(cursor != null)
             return true;
         else
@@ -79,11 +80,19 @@ public class EvenementHelper extends SQLiteOpenHelper {
     public Cursor findAll() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        db.close();
         return cursor;
     }
     public Cursor find(Evenement evenement) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE type = '" + evenement.getType() + "' AND jour = " + evenement.getJour() + " AND mois = " + evenement.getMois() + " AND annee = " + evenement.getAnnee(), null);
+        db.close();
+        return cursor;
+    }
+    public Cursor findByDate(Evenement evenement) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE jour = " + evenement.getJour() + " AND mois = " + evenement.getMois() + " AND annee = " + evenement.getAnnee(), null);
+        db.close();
         return cursor;
     }
 }

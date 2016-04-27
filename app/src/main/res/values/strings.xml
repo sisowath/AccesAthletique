@@ -11,4 +11,6 @@
         <item>Membre inférieur gauche</item>
         <item>Membre inférieur droite</item>
     </string-array>
+    <string name="title_activity_generer_rapport_therapeute">GenererRapportTherapeuteActivity
+    </string>
 </resources>

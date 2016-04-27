@@ -91,6 +91,13 @@ public class AthleteHelper extends SQLiteOpenHelper {
     public Cursor find(Athlete athlete) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE nom = '" + athlete.getNom().toLowerCase() + "' AND prenom '" + athlete.getPrenom().toLowerCase() + "' AND numeroJoueur = " + athlete.getNumeroJoueur(), null);
+        db.close();
+        return cursor;
+    }
+    public Cursor findById(Athlete athlete) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + athlete.getId(), null);
+        db.close();
         return cursor;
     }
 }

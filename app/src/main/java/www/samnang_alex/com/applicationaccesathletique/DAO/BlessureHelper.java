@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import www.samnang_alex.com.applicationaccesathletique.models.Blessure;
+import www.samnang_alex.com.applicationaccesathletique.models.Evenement;
 
 public class BlessureHelper extends SQLiteOpenHelper {
 
@@ -160,6 +161,12 @@ public class BlessureHelper extends SQLiteOpenHelper {
                 COLUMN_SOAPA + " = '" + blessure.getSoapA() + "' AND " +
                 COLUMN_SOAPP + " = '" + blessure.getSoapP() + "' AND " +
                 COLUMN_COMMENTAIRE + " = '" + blessure.getCommentaire() + "'", null);
+        db.close();
+        return cursor;
+    }
+    public Cursor findByIdEvenement(Blessure blessure) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE idEvenement = " + blessure.getIdEvenement(), null);
         db.close();
         return cursor;
     }

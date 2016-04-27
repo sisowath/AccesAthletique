@@ -79,12 +79,16 @@ public class MainActivity extends Activity {
         btnGenererRapport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GenererRapportTherapeuteActivity.class);
+                startActivity(intent);
+                /*
                 Toast toast = Toast.makeText(MainActivity.this, "En construction ...", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 ViewGroup group = (ViewGroup) toast.getView();
                 TextView messageTextView = (TextView) group.getChildAt(0);
                 messageTextView.setTextSize(36);
                 toast.show();
+                */
                 /* oi-haut source de :
                 http://stackoverflow.com/questions/15321186/how-to-display-toast-at-center-of-screen
                 http://stackoverflow.com/questions/5274354/how-can-we-increase-the-font-size-in-toast

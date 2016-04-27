@@ -187,4 +187,10 @@ public class RaffinementMembreHelper extends SQLiteOpenHelper {
         db.close();
         return cursor;
     }
+    public Cursor findById(RaffinementMembre raffinementMembre) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + raffinementMembre.getId(), null);
+        db.close();
+        return cursor;
+    }
 }

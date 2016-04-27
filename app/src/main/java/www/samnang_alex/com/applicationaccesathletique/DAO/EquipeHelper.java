@@ -76,4 +76,10 @@ public class EquipeHelper extends SQLiteOpenHelper {
         db.close();
         return cursor;
     }
+    public Cursor findById(Equipe equipe) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EQUIPE + " WHERE id = " + equipe.getId(), null);
+        db.close();
+        return cursor;
+    }
 }

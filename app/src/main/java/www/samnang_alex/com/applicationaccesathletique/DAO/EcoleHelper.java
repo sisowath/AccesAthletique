@@ -75,4 +75,10 @@ public class EcoleHelper extends SQLiteOpenHelper {
         db.close();
         return cursor;
     }
+    public Cursor findById(Ecole ecole) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + ecole.getId(), null);
+        db.close();
+        return cursor;
+    }
 }
