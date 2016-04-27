@@ -1,5 +1,6 @@
 package www.samnang_alex.com.applicationaccesathletique.DAO;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -77,17 +78,75 @@ public class RaffinementMembreHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
     public boolean ajouterUnRaffinementMembre(RaffinementMembre raffinementMembre) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_MUSCLES, raffinementMembre.getMuscles());
+        contentValues.put(COLUMN_LIGAMENTS, raffinementMembre.getLigaments());
+        contentValues.put(COLUMN_OS, raffinementMembre.getOs());
+        contentValues.put(COLUMN_NERFS, raffinementMembre.getNerfs());
+        contentValues.put(COLUMN_AUTRE, raffinementMembre.getAutre());
+        contentValues.put(COLUMN_RIEN, raffinementMembre.getRien());
+        contentValues.put(COLUMN_OEILDROIT, raffinementMembre.getOeilDroit());
+        contentValues.put(COLUMN_OEILGAUCHE, raffinementMembre.getOeilGauche());
+        contentValues.put(COLUMN_NEZ, raffinementMembre.getNez());
+        contentValues.put(COLUMN_BOUCHE, raffinementMembre.getBouche());
+        contentValues.put(COLUMN_DENTS, raffinementMembre.getDents());
+        contentValues.put(COLUMN_STERNUM, raffinementMembre.getSternum());
+        contentValues.put(COLUMN_COTES, raffinementMembre.getCotes());
+        contentValues.put(COLUMN_SACRUM, raffinementMembre.getSacrum());
+        contentValues.put(COLUMN_OSILIAQUE, raffinementMembre.getOsIliaque());
+        contentValues.put(COLUMN_COCCYX, raffinementMembre.getCoccyx());
+        contentValues.put(COLUMN_FOIE, raffinementMembre.getFoie());
+        contentValues.put(COLUMN_RATE, raffinementMembre.getRate());
+        contentValues.put(COLUMN_PANCREAS, raffinementMembre.getPancreas());
+        contentValues.put(COLUMN_REIN, raffinementMembre.getRein());
+        contentValues.put(COLUMN_COEUR, raffinementMembre.getCoeur());
+        contentValues.put(COLUMN_POUMON, raffinementMembre.getPoumon());
+        contentValues.put(COLUMN_GENITAUX, raffinementMembre.getGenitaux());
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABLE_NAME, null, contentValues);
+        db.close();
         return true;
     }
     public boolean modifierUnRaffinementMembre(RaffinementMembre raffinementMembre) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_MUSCLES, raffinementMembre.getMuscles());
+        contentValues.put(COLUMN_LIGAMENTS, raffinementMembre.getLigaments());
+        contentValues.put(COLUMN_OS, raffinementMembre.getOs());
+        contentValues.put(COLUMN_NERFS, raffinementMembre.getNerfs());
+        contentValues.put(COLUMN_AUTRE, raffinementMembre.getAutre());
+        contentValues.put(COLUMN_RIEN, raffinementMembre.getRien());
+        contentValues.put(COLUMN_OEILDROIT, raffinementMembre.getOeilDroit());
+        contentValues.put(COLUMN_OEILGAUCHE, raffinementMembre.getOeilGauche());
+        contentValues.put(COLUMN_NEZ, raffinementMembre.getNez());
+        contentValues.put(COLUMN_BOUCHE, raffinementMembre.getBouche());
+        contentValues.put(COLUMN_DENTS, raffinementMembre.getDents());
+        contentValues.put(COLUMN_STERNUM, raffinementMembre.getSternum());
+        contentValues.put(COLUMN_COTES, raffinementMembre.getCotes());
+        contentValues.put(COLUMN_SACRUM, raffinementMembre.getSacrum());
+        contentValues.put(COLUMN_OSILIAQUE, raffinementMembre.getOsIliaque());
+        contentValues.put(COLUMN_COCCYX, raffinementMembre.getCoccyx());
+        contentValues.put(COLUMN_FOIE, raffinementMembre.getFoie());
+        contentValues.put(COLUMN_RATE, raffinementMembre.getRate());
+        contentValues.put(COLUMN_PANCREAS, raffinementMembre.getPancreas());
+        contentValues.put(COLUMN_REIN, raffinementMembre.getRein());
+        contentValues.put(COLUMN_COEUR, raffinementMembre.getCoeur());
+        contentValues.put(COLUMN_POUMON, raffinementMembre.getPoumon());
+        contentValues.put(COLUMN_GENITAUX, raffinementMembre.getGenitaux());
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(TABLE_NAME, contentValues, " WHERE id = ", new String[] {String.valueOf(raffinementMembre.getId())});
+        db.close();
         return true;
     }
     public boolean supprimerUnRaffinementMembre(RaffinementMembre raffinementMembre) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_NAME, "WHERE id = ?", new String[] {String.valueOf(raffinementMembre.getId())});
+        db.close();
         return true;
     }
     public boolean trouverUnRaffinementMembre(RaffinementMembre raffinementMembre) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + raffinementMembre.getId(), null);
+        db.close();
         if(cursor != null)
             return true;
         else
@@ -96,6 +155,36 @@ public class RaffinementMembreHelper extends SQLiteOpenHelper {
     public Cursor findAll() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        db.close();
+        return cursor;
+    }
+    public Cursor find(RaffinementMembre raffinementMembre) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " +
+                COLUMN_MUSCLES + " = " + raffinementMembre.getMuscles() + " AND " +
+                COLUMN_LIGAMENTS + " = " + raffinementMembre.getLigaments() + " AND " +
+                COLUMN_OS + " = " + raffinementMembre.getOs() + " AND " +
+                COLUMN_NERFS + " = " + raffinementMembre.getNerfs() + " AND " +
+                COLUMN_AUTRE + " = " + raffinementMembre.getAutre() + " AND " +
+                COLUMN_RIEN + " = " + raffinementMembre.getRien() + " AND " +
+                COLUMN_OEILDROIT + " = " + raffinementMembre.getOeilDroit() + " AND " +
+                COLUMN_OEILGAUCHE + " = " + raffinementMembre.getOeilGauche() + " AND " +
+                COLUMN_NEZ + " = " + raffinementMembre.getNez() + " AND " +
+                COLUMN_BOUCHE + " = " + raffinementMembre.getBouche() + " AND " +
+                COLUMN_DENTS + " = " + raffinementMembre.getDents() + " AND " +
+                COLUMN_STERNUM + " = " + raffinementMembre.getSternum() + " AND " +
+                COLUMN_COTES + " = " + raffinementMembre.getCotes() + " AND " +
+                COLUMN_SACRUM + " = " + raffinementMembre.getSacrum() + " AND " +
+                COLUMN_OSILIAQUE + " = " + raffinementMembre.getOsIliaque() + " AND " +
+                COLUMN_COCCYX + " = " + raffinementMembre.getCoccyx() + " AND " +
+                COLUMN_FOIE + " = " + raffinementMembre.getFoie() + " AND " +
+                COLUMN_RATE + " = " + raffinementMembre.getRate() + " AND " +
+                COLUMN_PANCREAS + " = " + raffinementMembre.getPancreas() + " AND " +
+                COLUMN_REIN + " = " + raffinementMembre.getRein() + " AND " +
+                COLUMN_COEUR + " = " + raffinementMembre.getCoeur() + " AND " +
+                COLUMN_POUMON + " = " + raffinementMembre.getPoumon() + " AND " +
+                COLUMN_GENITAUX + " = " + raffinementMembre.getGenitaux(), null);
+        db.close();
         return cursor;
     }
 }

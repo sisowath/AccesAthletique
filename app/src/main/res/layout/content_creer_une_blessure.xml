@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="www.samnang_alex.com.applicationaccesathletique.CreerUneBlessureActivity"
+        tools:context=".views.CreerUneBlessureActivity"
         tools:showIn="@layout/activity_creer_une_blessure"
         android:orientation="vertical">
         <TextView

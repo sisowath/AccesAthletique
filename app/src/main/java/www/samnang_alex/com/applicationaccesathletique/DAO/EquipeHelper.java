@@ -36,7 +36,7 @@ public class EquipeHelper extends SQLiteOpenHelper {
     }
     public boolean ajouterUneEquipe(Equipe equipe) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NOM, equipe.getNom());
+        contentValues.put(COLUMN_NOM, equipe.getNom().toLowerCase());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_EQUIPE, null, contentValues);
         db.close();
@@ -44,7 +44,7 @@ public class EquipeHelper extends SQLiteOpenHelper {
     }
     public boolean modifierUneEquipe(Equipe equipe) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NOM, equipe.getNom());
+        contentValues.put(COLUMN_NOM, equipe.getNom().toLowerCase());
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_EQUIPE, contentValues, "id = ?", new String[]{String.valueOf(equipe.getId())});
         db.close();
@@ -58,7 +58,7 @@ public class EquipeHelper extends SQLiteOpenHelper {
     }
     public boolean trouverUneEquipe(Equipe equipe) {
         SQLiteDatabase db =getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EQUIPE + " WHERE id = " + equipe.getId(), null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EQUIPE + " WHERE nom = '" + equipe.getNom().toLowerCase() + "'", null);
         if (cursor != null)
             return true;
         else
@@ -67,6 +67,12 @@ public class EquipeHelper extends SQLiteOpenHelper {
     public Cursor findAll() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EQUIPE, null);
+        db.close();
+        return cursor;
+    }
+    public Cursor find(Equipe equipe) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EQUIPE + " WHERE nom = '" + equipe.getNom().toLowerCase() + "'", null);
         db.close();
         return cursor;
     }

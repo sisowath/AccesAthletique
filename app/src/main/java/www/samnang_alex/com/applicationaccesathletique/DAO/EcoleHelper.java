@@ -34,7 +34,7 @@ public class EcoleHelper extends SQLiteOpenHelper {
     }
     public boolean ajouterUneEcole(Ecole ecole) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NOM, ecole.getNom());
+        contentValues.put(COLUMN_NOM, ecole.getNom().toLowerCase());
         SQLiteDatabase db= getWritableDatabase();
         db.insert(TABLE_NAME, null, contentValues);
         db.close();
@@ -42,13 +42,13 @@ public class EcoleHelper extends SQLiteOpenHelper {
     }
     public boolean supprimerUneEcole(Ecole ecole) {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_NAME, COLUMN_NOM, new String[]{ecole.getNom()});
+        db.delete(TABLE_NAME, COLUMN_NOM, new String[]{ecole.getNom().toLowerCase()});
         db.close();
         return  true;
     }
     public boolean modifierUneEcole(Ecole ecole) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NOM, ecole.getNom());
+        contentValues.put(COLUMN_NOM, ecole.getNom().toLowerCase());
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE_NAME, contentValues, "NOM = ?", new String[]{ecole.getNom()});
         db.close();
@@ -68,5 +68,11 @@ public class EcoleHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(requete, null);
         db.close();
         return  cursor;
+    }
+    public Cursor find(Ecole ecole) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE nom = '" + ecole.getNom().toLowerCase() + "'", null);
+        db.close();
+        return cursor;
     }
 }

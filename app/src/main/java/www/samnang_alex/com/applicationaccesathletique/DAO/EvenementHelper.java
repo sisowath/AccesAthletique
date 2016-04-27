@@ -81,4 +81,9 @@ public class EvenementHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         return cursor;
     }
+    public Cursor find(Evenement evenement) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE type = '" + evenement.getType() + "' AND jour = " + evenement.getJour() + " AND mois = " + evenement.getMois() + " AND annee = " + evenement.getAnnee(), null);
+        return cursor;
+    }
 }

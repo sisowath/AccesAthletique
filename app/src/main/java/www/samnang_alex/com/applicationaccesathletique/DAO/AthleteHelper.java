@@ -33,9 +33,9 @@ public class AthleteHelper extends SQLiteOpenHelper {
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_NOM + " TEXT," +
                 COLUMN_PRENOM + " TEXT," +
-                COLUMN_NUMEROJOUEUR + " INTEGER," +
-                COLUMN_IDEQUIPE + " INTEGER, FOREIGN KEY (" + COLUMN_IDEQUIPE + ") REFERENCES Equipe(id)," +
-                COLUMN_IDECOLE + " INTEGER, FOREIGN KEY (" + COLUMN_IDECOLE + ") REFERENCES Ecole(id);");
+                COLUMN_NUMEROJOUEUR + " TEXT," +
+                COLUMN_IDEQUIPE + " TEXT, FOREIGN KEY (" + COLUMN_IDEQUIPE + ") REFERENCES Equipe(id)," +
+                COLUMN_IDECOLE + " TEXT, FOREIGN KEY (" + COLUMN_IDECOLE + ") REFERENCES Ecole(id);");
         db.close();
     }
 
@@ -46,8 +46,8 @@ public class AthleteHelper extends SQLiteOpenHelper {
     }
     public boolean ajouterUnAthlete(Athlete athlete) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NOM, athlete.getNom());
-        contentValues.put(COLUMN_PRENOM, athlete.getPrenom());
+        contentValues.put(COLUMN_NOM, athlete.getNom().toLowerCase());
+        contentValues.put(COLUMN_PRENOM, athlete.getPrenom().toLowerCase());
         contentValues.put(COLUMN_NUMEROJOUEUR, athlete.getNumeroJoueur());
         contentValues.put(COLUMN_IDEQUIPE, athlete.getIdEquipe());
         contentValues.put(COLUMN_IDECOLE, athlete.getIdEcole());
@@ -58,8 +58,8 @@ public class AthleteHelper extends SQLiteOpenHelper {
     }
     public boolean modifierUnAthlete(Athlete athlete) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NOM, athlete.getNom());
-        contentValues.put(COLUMN_PRENOM, athlete.getPrenom());
+        contentValues.put(COLUMN_NOM, athlete.getNom().toLowerCase());
+        contentValues.put(COLUMN_PRENOM, athlete.getPrenom().toLowerCase());
         contentValues.put(COLUMN_NUMEROJOUEUR, athlete.getNumeroJoueur());
         contentValues.put(COLUMN_IDEQUIPE, athlete.getIdEquipe());
         contentValues.put(COLUMN_IDECOLE, athlete.getIdEcole());
@@ -86,6 +86,11 @@ public class AthleteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         db.close();
+        return cursor;
+    }
+    public Cursor find(Athlete athlete) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE nom = '" + athlete.getNom().toLowerCase() + "' AND prenom '" + athlete.getPrenom().toLowerCase() + "' AND numeroJoueur = " + athlete.getNumeroJoueur(), null);
         return cursor;
     }
 }

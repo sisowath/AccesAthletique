@@ -1,14 +1,10 @@
-package www.samnang_alex.com.applicationaccesathletique;
+package www.samnang_alex.com.applicationaccesathletique.views;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,36 +17,34 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
+import www.samnang_alex.com.applicationaccesathletique.DAO.AthleteHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.BlessureHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.EcoleHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.EquipeHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.EvenementHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.RaffinementMembreHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.RestrictionHelper;
+import www.samnang_alex.com.applicationaccesathletique.R;
+import www.samnang_alex.com.applicationaccesathletique.models.Athlete;
+import www.samnang_alex.com.applicationaccesathletique.models.Blessure;
+import www.samnang_alex.com.applicationaccesathletique.models.Ecole;
+import www.samnang_alex.com.applicationaccesathletique.models.Equipe;
+import www.samnang_alex.com.applicationaccesathletique.models.Evenement;
+import www.samnang_alex.com.applicationaccesathletique.models.RaffinementMembre;
 import www.samnang_alex.com.applicationaccesathletique.models.RapportAthlete;
 import www.samnang_alex.com.applicationaccesathletique.models.RapportTherapeute;
+import www.samnang_alex.com.applicationaccesathletique.models.Restriction;
 
 import static java.lang.Character.toUpperCase;
 
@@ -484,6 +478,250 @@ public class CreerUneBlessureActivity extends Activity {
                     TextView txtAutreCommentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
                     rapportAthlete.setAutreCommentaire(txtAutreCommentaire.getText().toString());
                     rapportAthlete.creeRapport();
+
+                    // Vérification du idEquipe
+                    int idEquipe = -1;
+                    Equipe equipe = new Equipe();
+                    equipe.setNom(atxtNomEquipe.getText().toString());
+                    EquipeHelper equipeHelper = new EquipeHelper(CreerUneBlessureActivity.this);
+                    Cursor curseurEquipe = equipeHelper.find(equipe);
+                    if(curseurEquipe!=null) {
+                        while (curseurEquipe.moveToNext()) {
+                            idEquipe = Integer.parseInt( curseurEquipe.getColumnName(curseurEquipe.getColumnIndex("id")) );
+                        }
+                    } else {
+                        equipeHelper.ajouterUneEquipe(equipe);
+                        curseurEquipe = equipeHelper.find(equipe);
+                        while (curseurEquipe.moveToNext()) {
+                            idEquipe = Integer.parseInt( curseurEquipe.getColumnName(curseurEquipe.getColumnIndex("id")) );
+                        }
+                    }
+                    // Vérification du idEcole
+                    int idEcole = -1;
+                    Ecole ecole = new Ecole();
+                    ecole.setNom(atxtNomEcole.getText().toString());
+                    EcoleHelper ecoleHelper = new EcoleHelper(CreerUneBlessureActivity.this);
+                    Cursor curseurEcole = ecoleHelper.find(ecole);
+                    if(curseurEcole!=null) {
+                        while (curseurEcole.moveToNext()) {
+                            idEcole = Integer.parseInt( curseurEcole.getColumnName(curseurEcole.getColumnIndex("id")) );
+                        }
+                    } else {
+                        ecoleHelper.ajouterUneEcole(ecole);
+                        curseurEcole = ecoleHelper.find(ecole);
+                        while(curseurEcole.moveToNext()) {
+                            idEcole = Integer.parseInt( curseurEcole.getColumnName(curseurEcole.getColumnIndex("id")) );
+                        }
+                    }
+                    // Vérification du idAthlete
+                    int idAthlete = -1;
+                    Athlete athlete = new Athlete();
+                    athlete.setNom(atxtNomPatient.getText().toString());
+                    athlete.setPrenom(atxtPrenomPatient.getText().toString());
+                    athlete.setNumeroJoueur(atxtNumeroJoueur.getText().toString());
+                    athlete.setIdEquipe(idEquipe);
+                    athlete.setIdEcole(idEcole);
+                    AthleteHelper athleteHelper = new AthleteHelper(CreerUneBlessureActivity.this);
+                    Cursor curseurAthlete = athleteHelper.find(athlete);
+                    if(curseurAthlete!=null) {
+                        while(curseurAthlete.moveToNext()) {
+                            idAthlete = Integer.parseInt( curseurAthlete.getColumnName(curseurAthlete.getColumnIndex("id")) );
+                        }
+                    } else {
+                        athleteHelper.ajouterUnAthlete(athlete);
+                        curseurAthlete = athleteHelper.find(athlete);
+                        while(curseurAthlete.moveToNext()) {
+                            idAthlete = Integer.parseInt( curseurAthlete.getColumnName(curseurAthlete.getColumnIndex("id")) );
+                        }
+                    }
+                    // Vérification du idEvenement
+                    int idEvenement = -1;
+                    Evenement evenement = new Evenement();
+                    evenement.setType(sTypeEvenement.getSelectedItem().toString());
+                    evenement.setJour(dpDateDeLaBlessure.getDayOfMonth());
+                    evenement.setMois(dpDateDeLaBlessure.getMonth());
+                    evenement.setAnnee(dpDateDeLaBlessure.getYear());
+                    EvenementHelper evenementHelper = new EvenementHelper(CreerUneBlessureActivity.this);
+                    Cursor curseurEvenement = evenementHelper.find(evenement);
+                    if(curseurEvenement!=null) {
+                        while(curseurEvenement.moveToNext()) {
+                            idEvenement = Integer.parseInt( curseurEvenement.getColumnName(curseurEvenement.getColumnIndex("id")) );
+                        }
+                    } else {
+                        evenementHelper.ajouterUnEvenement(evenement);
+                        curseurEvenement = evenementHelper.find(evenement);
+                        while(curseurEvenement.moveToNext()) {
+                            idEvenement = Integer.parseInt( curseurEvenement.getColumnName(curseurEvenement.getColumnIndex("id")) );
+                        }
+                    }
+                    // Vérification du idRaffinementMembre
+                    int idRaffinementMembre = -1;
+                    RaffinementMembre raffinementMembre = new RaffinementMembre();
+                    if(checkBoxes[7].isChecked() || checkBoxes[14].isChecked() || checkBoxes[19].isChecked())
+                        raffinementMembre.setMuscles(1);
+                    else
+                        raffinementMembre.setMuscles(0);
+                    if(checkBoxes[8].isChecked() || checkBoxes[20].isChecked())
+                        raffinementMembre.setLigaments(1);
+                    else
+                        raffinementMembre.setLigaments(0);
+                    if(checkBoxes[9].isChecked())
+                        raffinementMembre.setOs(1);
+                    else
+                        raffinementMembre.setOs(0);
+                    if(checkBoxes[10].isChecked())
+                        raffinementMembre.setNerfs(1);
+                    else
+                        raffinementMembre.setNerfs(0);
+                    if(checkBoxes[6].isChecked() || checkBoxes[11].isChecked() || checkBoxes[15].isChecked() || checkBoxes[21].isChecked() || checkBoxes[29].isChecked())
+                        raffinementMembre.setAutre(1);
+                    else
+                        raffinementMembre.setAutre(0);
+                    if(checkBoxes[0].isChecked())
+                        raffinementMembre.setRien(1);
+                    else
+                        raffinementMembre.setRien(0);
+                    if(checkBoxes[1].isChecked())
+                        raffinementMembre.setOeilDroit(1);
+                    else
+                        raffinementMembre.setOeilDroit(0);
+                    if (checkBoxes[2].isChecked())
+                        raffinementMembre.setOeilGauche(1);
+                    else
+                        raffinementMembre.setOeilGauche(0);
+                    if(checkBoxes[3].isChecked())
+                        raffinementMembre.setNez(1);
+                    else
+                        raffinementMembre.setNez(0);
+                    if(checkBoxes[4].isChecked())
+                        raffinementMembre.setBouche(1);
+                    else
+                        raffinementMembre.setBouche(0);
+                    if(checkBoxes[5].isChecked())
+                        raffinementMembre.setDents(1);
+                    else
+                        raffinementMembre.setDents(0);
+                    if(checkBoxes[12].isChecked())
+                        raffinementMembre.setSternum(1);
+                    else
+                        raffinementMembre.setSternum(0);
+                    if(checkBoxes[13].isChecked())
+                        raffinementMembre.setCotes(1);
+                    else
+                        raffinementMembre.setCotes(0);
+                    if(checkBoxes[16].isChecked())
+                        raffinementMembre.setSacrum(1);
+                    else
+                        raffinementMembre.setSacrum(0);
+                    if(checkBoxes[17].isChecked())
+                        raffinementMembre.setOsIliaque(1);
+                    else
+                        raffinementMembre.setOsIliaque(0);
+                    if(checkBoxes[18].isChecked())
+                        raffinementMembre.setCoccyx(1);
+                    else
+                        raffinementMembre.setCoccyx(0);
+                    if(checkBoxes[22].isChecked())
+                        raffinementMembre.setFoie(1);
+                    else
+                        raffinementMembre.setFoie(0);
+                    if(checkBoxes[23].isChecked())
+                        raffinementMembre.setRate(1);
+                    else
+                        raffinementMembre.setRate(0);
+                    if(checkBoxes[24].isChecked())
+                        raffinementMembre.setPancreas(1);
+                    else
+                        raffinementMembre.setPancreas(0);
+                    if(checkBoxes[25].isChecked())
+                        raffinementMembre.setRein(1);
+                    else
+                        raffinementMembre.setRein(0);
+                    if(checkBoxes[26].isChecked())
+                        raffinementMembre.setCoeur(1);
+                    else
+                        raffinementMembre.setCoeur(0);
+                    if(checkBoxes[27].isChecked())
+                        raffinementMembre.setPoumon(1);
+                    else
+                        raffinementMembre.setPoumon(0);
+                    if(checkBoxes[28].isChecked())
+                        raffinementMembre.setGenitaux(1);
+                    else
+                        raffinementMembre.setGenitaux(0);
+                    RaffinementMembreHelper raffinementMembreHelper = new RaffinementMembreHelper(CreerUneBlessureActivity.this);
+                    Cursor curseurRaffinementMembre = raffinementMembreHelper.find(raffinementMembre);
+                    if(curseurRaffinementMembre!=null) {
+                        while(curseurRaffinementMembre.moveToNext()) {
+                            idRaffinementMembre = Integer.parseInt( curseurRaffinementMembre.getColumnName(curseurRaffinementMembre.getColumnIndex("id")) );
+                        }
+                    } else {
+                        raffinementMembreHelper.ajouterUnRaffinementMembre(raffinementMembre);
+                        curseurRaffinementMembre = raffinementMembreHelper.find(raffinementMembre);
+                        while(curseurRaffinementMembre.moveToNext()) {
+                            idRaffinementMembre = Integer.parseInt( curseurRaffinementMembre.getColumnName(curseurRaffinementMembre.getColumnIndex("id")) );
+                        }
+                    }
+                    // Vérification du idRestriction
+                    int idRestriction = -1;
+                    Restriction restriction = new Restriction();
+                    if(checkBoxes[30].isChecked())
+                        restriction.setPratiqueAvecRestriction(1);
+                    else
+                        restriction.setPratiqueAvecRestriction(0);
+                    if(checkBoxes[31].isChecked())
+                        restriction.setPartieAvecRestriction(1);
+                    else
+                        restriction.setPartieAvecRestriction(0);
+                    if(checkBoxes[32].isChecked())
+                        restriction.setAucunePratique(1);
+                    else
+                        restriction.setAucunePratique(0);
+                    if(checkBoxes[33].isChecked())
+                        restriction.setAucunePartie(1);
+                    else
+                        restriction.setAucunePartie(0);
+                    if(checkBoxes[34].isChecked())
+                        restriction.setAucuneRestriction(1);
+                    else
+                        restriction.setAucuneRestriction(0);
+                    RestrictionHelper restrictionHelper = new RestrictionHelper(CreerUneBlessureActivity.this);
+                    Cursor curseurRestriction = restrictionHelper.find(restriction);
+                    if(curseurRestriction!=null) {
+                        while(curseurRestriction.moveToNext()) {
+                            idRestriction = Integer.parseInt( curseurRestriction.getColumnName(curseurRestriction.getColumnIndex("id")) );
+                        }
+                    } else {
+                        restrictionHelper.ajouterUneRestriction(restriction);
+                        curseurRestriction = restrictionHelper.find(restriction);
+                        while(curseurRestriction.moveToNext()) {
+                            idRestriction = Integer.parseInt( curseurRestriction.getColumnName(curseurRestriction.getColumnIndex("id")) );
+                        }
+                    }
+                    // Blessure
+                    Blessure blessure = new Blessure();
+                    blessure.setIdAthlete(idAthlete);
+                    blessure.setIdEvenement(idEvenement);
+                    blessure.setJourtRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth());
+                    blessure.setMoisRetourEntrainement(dpDateDeRetourEntrainement.getMonth());
+                    blessure.setAnneeRetourEntrainement(dpDateDeRetourEntrainement.getYear());
+                    blessure.setJourRetourJeu(dpDateRetourJeu.getDayOfMonth());
+                    blessure.setMoisRetourJeu(dpDateRetourJeu.getMonth());
+                    blessure.setAnneeRetourJeu(dpDateRetourJeu.getYear());
+                    blessure.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
+                    blessure.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                    blessure.setIdRaffinementMembre(idRaffinementMembre);
+                    blessure.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
+                    blessure.setIdRestriction(idRestriction);
+                    blessure.setDescriptionCondition(txtDescriptionDeLaCondition.getText().toString());
+                    blessure.setMecanismeBlessure(txtMecanismeDeBlessure.getText().toString());
+                    blessure.setSoapS(txtSoapS.getText().toString());
+                    blessure.setSoapO(txtSoapO.getText().toString());
+                    blessure.setSoapA(txtSoapA.getText().toString());
+                    blessure.setSoapP(txtSoapP.getText().toString());
+                    blessure.setCommentaire(txtAutreCommentaire.getText().toString());
+                    BlessureHelper blessureHelper = new BlessureHelper(CreerUneBlessureActivity.this);
+                    blessureHelper.ajouterUneBlessure(blessure);
                 } catch (DocumentException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

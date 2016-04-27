@@ -137,4 +137,30 @@ public class BlessureHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         return cursor;
     }
+    public Cursor find(Blessure blessure) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " +
+                COLUMN_IDATHLETE + " = " + blessure.getIdAthlete() + " AND " +
+                COLUMN_IDEVENEMENT + " = " + blessure.getIdEvenement() + " AND " +
+                COLUMN_JOURRETOURENTRAINEMENT + " = " + blessure.getJourtRetourEntrainement() + " AND " +
+                COLUMN_MOISRETOURENTRAINEMENT + " = " + blessure.getMoisRetourEntrainement() + " AND " +
+                COLUMN_ANNEERETOURENTRAINEMENT + " = " + blessure.getAnneeRetourEntrainement() + " AND " +
+                COLUMN_JOURRETOURJEU + " = " + blessure.getJourRetourJeu() + " AND " +
+                COLUMN_MOISRETOURJEU + " = " + blessure.getMoisRetourJeu() + " AND " +
+                COLUMN_ANNEERETOURJEU + " = " + blessure.getAnneeRetourJeu() + " AND " +
+                COLUMN_MEMBREAFFECTE + " = '" + blessure.getMembreAffecte() + "' AND " +
+                COLUMN_PRECISIONMEMBRE + " = '" + blessure.getPrecisionMembre() + "' AND " +
+                COLUMN_IDRAFFINEMENTMEMBRE + " = "+ blessure.getIdRaffinementMembre() + " AND " +
+                COLUMN_CONTEXTE + " = '" + blessure.getContexte() + "' AND " +
+                COLUMN_IDRESTRICTION + " = " + blessure.getIdRestriction() + " AND " +
+                COLUMN_DESCRIPTIONCONDITION + " = '" + blessure.getDescriptionCondition() + "' AND " +
+                COLUMN_MECANISMEBLESSURE + " = '" + blessure.getMecanismeBlessure() + "' AND " +
+                COLUMN_SOAPS + " = '" + blessure.getSoapS() + "' AND " +
+                COLUMN_SOAPO + " = '" + blessure.getSoapO() + "' AND " +
+                COLUMN_SOAPA + " = '" + blessure.getSoapA() + "' AND " +
+                COLUMN_SOAPP + " = '" + blessure.getSoapP() + "' AND " +
+                COLUMN_COMMENTAIRE + " = '" + blessure.getCommentaire() + "'", null);
+        db.close();
+        return cursor;
+    }
 }

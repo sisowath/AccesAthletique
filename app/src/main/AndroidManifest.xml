@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreerUneBlessureActivity"
+            android:name=".views.CreerUneBlessureActivity"
             android:label="@string/title_activity_creer_une_blessure"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".GestionDesEcolesActivity"></activity>
+        <activity android:name=".views.GestionDesEcolesActivity"></activity>
     </application>
 
 </manifest>

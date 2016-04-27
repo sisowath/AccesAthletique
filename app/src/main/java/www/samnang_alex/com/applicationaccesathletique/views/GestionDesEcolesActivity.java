@@ -1,4 +1,4 @@
-package www.samnang_alex.com.applicationaccesathletique;
+package www.samnang_alex.com.applicationaccesathletique.views;
 
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import www.samnang_alex.com.applicationaccesathletique.DAO.EcoleHelper;
+import www.samnang_alex.com.applicationaccesathletique.R;
 
 public class GestionDesEcolesActivity extends AppCompatActivity {
 
