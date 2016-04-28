@@ -20,6 +20,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import www.samnang_alex.com.applicationaccesathletique.R;
@@ -63,6 +64,33 @@ public class RapportAthlete {
     private String SOAPA;
     private String SOAPP;
     private String autreCommentaire;
+
+    public RapportAthlete(TableRapportAthlete tableRapportAthlete) {
+        this.nomDuPatient = tableRapportAthlete.getNomAthlete();
+        this.prenomDuPatient = tableRapportAthlete.getPrenomAthlete();
+        this.nomEquipe = tableRapportAthlete.getNomEquipe();
+        this.nomEcole = tableRapportAthlete.getNomEcole();
+        this.numeroJoueur = String.valueOf(tableRapportAthlete.getNumeroJoueur());
+        this.dateDeLaBlessure = tableRapportAthlete.getJourBlessure() + "/" + tableRapportAthlete.getMoisBlessure() + "/" + tableRapportAthlete.getAnneeBlessure();
+        this.typeEvenement = tableRapportAthlete.getTypeEvenement();
+        this.dateRetourEntrainement = tableRapportAthlete.getJourRetourEntrainement() + "/" + tableRapportAthlete.getMoisRetourEntrainement() + "/" + tableRapportAthlete.getAnneeRetourEntrainement();
+        this.dateRetourJeu = tableRapportAthlete.getJourRetourJeu() + "/" + tableRapportAthlete.getMoisRetourJeu() + "/" + tableRapportAthlete.getAnneeRetourJeu();
+        this.regionAffectee = tableRapportAthlete.getMembreAffecte();
+        this.precisionRegionAffectee = tableRapportAthlete.getPrecisionMembre();
+        this.listeDescriptionDetailleeRegionAffectee = new ArrayList<>();
+        this.listeDescriptionDetailleeRegionAffectee.add( tableRapportAthlete.getRaffinementMembre() );
+        this.contexte = tableRapportAthlete.getContexte();
+        this.listeRestrictions = new ArrayList<>();
+        this.listeRestrictions.add(tableRapportAthlete.getRestriction());
+        this.descriptionDeLaCondition = tableRapportAthlete.getDescriptionCondition();
+        this.mecanismeDeBlessure = tableRapportAthlete.getMecanismeBlessure();
+        this.SOAPS = tableRapportAthlete.getSoapS();
+        this.SOAPO = tableRapportAthlete.getSoapO();
+        this.SOAPA = tableRapportAthlete.getSoapA();
+        this.SOAPP = tableRapportAthlete.getSoapP();
+        this.autreCommentaire = tableRapportAthlete.getCommentaire();
+        this.nomDuRapport = tableRapportAthlete.getJourBlessure() + "_" + tableRapportAthlete.getMoisBlessure() + "_" + tableRapportAthlete.getAnneeBlessure() + "_Rapport Athète " + tableRapportAthlete.getNomAthlete().toUpperCase() + " - " + tableRapportAthlete.getPrenomAthlete().toLowerCase();
+    }
 
     public String getNomDuRapport() { return nomDuRapport; }
     public void setNomDuRapport(String nomDuRapport) { this.nomDuRapport = nomDuRapport; }

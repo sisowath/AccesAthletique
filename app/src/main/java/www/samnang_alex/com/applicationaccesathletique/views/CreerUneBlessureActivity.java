@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ import www.samnang_alex.com.applicationaccesathletique.DAO.EcoleHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.EquipeHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.EvenementHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.RaffinementMembreHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.RapportAthleteHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.RapportTherapeuteHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.RestrictionHelper;
 import www.samnang_alex.com.applicationaccesathletique.R;
 import www.samnang_alex.com.applicationaccesathletique.models.Athlete;
@@ -45,6 +48,8 @@ import www.samnang_alex.com.applicationaccesathletique.models.RaffinementMembre;
 import www.samnang_alex.com.applicationaccesathletique.models.RapportAthlete;
 import www.samnang_alex.com.applicationaccesathletique.models.RapportTherapeute;
 import www.samnang_alex.com.applicationaccesathletique.models.Restriction;
+import www.samnang_alex.com.applicationaccesathletique.models.TableRapportAthlete;
+import www.samnang_alex.com.applicationaccesathletique.models.TableRapportTherapeute;
 
 import static java.lang.Character.toUpperCase;
 
@@ -101,7 +106,7 @@ public class CreerUneBlessureActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creer_une_blessure);
 
-        checkBoxes = new CheckBox[30];
+        checkBoxes = new CheckBox[35];
         checkBoxes[0] = (CheckBox) findViewById(R.id.cbxRien);
         checkBoxes[1] = (CheckBox) findViewById(R.id.cbxOeilDroit);
         checkBoxes[2] = (CheckBox) findViewById(R.id.cbxOeilGauche);
@@ -433,333 +438,480 @@ public class CreerUneBlessureActivity extends Activity {
         btnSauvegarderRapport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable d = getResources().getDrawable(R.drawable.acces_athletique_logo);
-                try {
-                    RapportAthlete rapportAthlete = new RapportAthlete();
-                    rapportAthlete.setNomDuRapport("Rapport athlète du " + dpDateDeLaBlessure.getDayOfMonth() + "_" + dpDateDeLaBlessure.getMonth() + "_" + dpDateDeLaBlessure.getYear());
-                    rapportAthlete.setLogoPath(d.toString());
-                    rapportAthlete.setNomDuPatient(atxtNomPatient.getText().toString());
-                    rapportAthlete.setPrenomDuPatient(atxtPrenomPatient.getText().toString());
-                    rapportAthlete.setNomEquipe(atxtNomEquipe.getText().toString());
-                    rapportAthlete.setNomEcole(atxtNomEcole.getText().toString());
-                    rapportAthlete.setNumeroJoueur(atxtNumeroJoueur.getText().toString());
-                    rapportAthlete.setTypeEvenement(sTypeEvenement.getSelectedItem().toString());
-                    rapportAthlete.setDateDeLaBlessure(dpDateDeLaBlessure.getDayOfMonth() + "/" + dpDateDeLaBlessure.getMonth() + "/" + dpDateDeLaBlessure.getYear());
-                    rapportAthlete.setDateRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth() + "/" + dpDateDeRetourEntrainement.getMonth() + "/" + dpDateDeRetourEntrainement.getYear());
-                    rapportAthlete.setDateRetourJeu(dpDateRetourJeu.getDayOfMonth() + "/" + dpDateRetourJeu.getMonth() + "/" + dpDateRetourJeu.getYear());
-                    rapportAthlete.setRegionAffectee(sRegionAffectee.getSelectedItem().toString());
-                    rapportAthlete.setPrecisionRegionAffectee(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
-                    List<String> liste = new ArrayList<String>();
-                    for(int i=0; i < checkBoxes.length; i++) {
-                        if(checkBoxes[i].isChecked()) {
-                            liste.add(checkBoxes[i].getText().toString());
+                ScrollView scrollView = (ScrollView) findViewById(R.id.svCreerUneBlessure);
+                if (atxtNomPatient.length() == 0) {
+                    scrollView.smoothScrollTo(0, atxtNomPatient.getBottom() - 200);
+                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Attention ! Vous avez oublié le nom du patient.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setBackgroundColor(Color.RED);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                    atxtNomPatient.requestFocus();
+                } else if (atxtPrenomPatient.length() == 0) {
+                    scrollView.smoothScrollTo(0, atxtPrenomPatient.getBottom() - 200);
+                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Attention ! Vous avez oublié le prénom du patient.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setBackgroundColor(Color.RED);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                    atxtPrenomPatient.requestFocus();
+                } else if (atxtNomEquipe.length() == 0) {
+                    scrollView.smoothScrollTo(0, atxtNomEquipe.getBottom() - 200);
+                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Attention ! Vous avez oublié le nom de l'équipe.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setBackgroundColor(Color.RED);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                    atxtNomEquipe.requestFocus();
+                } else if (atxtNomEcole.length() == 0) {
+                    scrollView.smoothScrollTo(0, atxtNomEcole.getBottom() - 200);
+                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Attention ! Vous avez oublié le nom de l'école.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setBackgroundColor(Color.RED);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                    atxtNomEcole.requestFocus();
+                } else if (atxtNumeroJoueur.length() == 0) {
+                    scrollView.smoothScrollTo(0, atxtNumeroJoueur.getBottom() - 200);
+                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Attention ! Vous avez oublié le numéro du joueur.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setBackgroundColor(Color.RED);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                    atxtNumeroJoueur.requestFocus();
+                } else {
+                    TableRapportAthlete tableRapportAthlete = new TableRapportAthlete();
+                    tableRapportAthlete.setNomAthlete(atxtNomPatient.getText().toString());
+                    tableRapportAthlete.setPrenomAthlete(atxtPrenomPatient.getText().toString());
+                    tableRapportAthlete.setNomEquipe(atxtNomEquipe.getText().toString());
+                    tableRapportAthlete.setNomEcole(atxtNomEcole.getText().toString());
+                    tableRapportAthlete.setNumeroJoueur(Integer.parseInt(atxtNumeroJoueur.getText().toString()));
+                    tableRapportAthlete.setJourBlessure(dpDateDeLaBlessure.getDayOfMonth());
+                    tableRapportAthlete.setMoisBlessure(dpDateDeLaBlessure.getMonth());
+                    tableRapportAthlete.setAnneeBlessure(dpDateDeLaBlessure.getYear());
+                    tableRapportAthlete.setTypeEvenement(sTypeEvenement.getSelectedItem().toString());
+                    tableRapportAthlete.setJourRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth());
+                    tableRapportAthlete.setMoisRetourEntrainement(dpDateDeRetourEntrainement.getMonth());
+                    tableRapportAthlete.setAnneeRetourEntrainement(dpDateDeRetourEntrainement.getYear());
+                    tableRapportAthlete.setJourRetourJeu(dpDateRetourJeu.getDayOfMonth());
+                    tableRapportAthlete.setMoisRetourJeu(dpDateRetourJeu.getMonth());
+                    tableRapportAthlete.setAnneeRetourJeu(dpDateRetourJeu.getYear());
+                    tableRapportAthlete.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
+                    tableRapportAthlete.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                    List<String> listeRaffinementMembre = new ArrayList<String>();
+                    for (int i = 0; i < 30; i++) {
+                        if (checkBoxes[i].isChecked()) {
+                            listeRaffinementMembre.add(checkBoxes[i].getText().toString());
                         }
                     }
-                    rapportAthlete.setListeDescriptionDetailleeRegionAffectee(liste);
-                    rapportAthlete.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
+                    tableRapportAthlete.setRaffinementMembre(listeRaffinementMembre.toString());
+                    tableRapportAthlete.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
                     List<String> listeRestriction = new ArrayList<String>();
-                    for(int i=30; i < checkBoxes.length; i++) {
-                        if(checkBoxes[i].isChecked()) {
+                    for (int i = 30; i < 35; i++) {
+                        if (checkBoxes[i].isChecked()) {
                             listeRestriction.add(checkBoxes[i].getText().toString());
                         }
                     }
-                    rapportAthlete.setListeRestrictions(listeRestriction);
-                    rapportAthlete.setDescriptionDeLaCondition(txtDescriptionDeLaCondition.getText().toString());
-                    txtMecanismeDeBlessure = (EditText) findViewById(R.id.txtMecanismeDeBlessure);
-                    rapportAthlete.setMecanismeDeBlessure(txtMecanismeDeBlessure.getText().toString());
-                    TextView txtSoapS = (TextView) findViewById(R.id.txtSoapS);
-                    rapportAthlete.setSOAPS(txtSoapS.getText().toString());
-                    TextView txtSoapO = (TextView) findViewById(R.id.txtSoapO);
-                    rapportAthlete.setSOAPO(txtSoapO.getText().toString());
-                    TextView txtSoapA = (TextView) findViewById(R.id.txtSoapA);
-                    rapportAthlete.setSOAPA(txtSoapA.getText().toString());
-                    TextView txtSoapP = (TextView) findViewById(R.id.txtSoapP);
-                    rapportAthlete.setSOAPP(txtSoapP.getText().toString());
-                    TextView txtAutreCommentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
-                    rapportAthlete.setAutreCommentaire(txtAutreCommentaire.getText().toString());
-                    rapportAthlete.creeRapport();
+                    tableRapportAthlete.setRestriction(listeRestriction.toString());
+                    tableRapportAthlete.setDescriptionCondition(txtDescriptionDeLaCondition.getText().toString());
+                    TextView mecanismeBlessure = (TextView) findViewById(R.id.txtMecanismeDeBlessure);
+                    tableRapportAthlete.setMecanismeBlessure(mecanismeBlessure.getText().toString());
+                    TextView soapS = (TextView) findViewById(R.id.txtSoapS);
+                    tableRapportAthlete.setSoapS(soapS.getText().toString());
+                    TextView soapO = (TextView) findViewById(R.id.txtSoapO);
+                    tableRapportAthlete.setSoapO(soapO.getText().toString());
+                    TextView soapA = (TextView) findViewById(R.id.txtSoapA);
+                    tableRapportAthlete.setSoapA(soapA.getText().toString());
+                    TextView soapP = (TextView) findViewById(R.id.txtSoapP);
+                    tableRapportAthlete.setSoapP(soapP.getText().toString());
+                    TextView commentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
+                    tableRapportAthlete.setCommentaire(commentaire.getText().toString());
 
-                    // Vérification du idEquipe
-                    int idEquipe = -1;
-                    Equipe equipe = new Equipe();
-                    equipe.setNom(atxtNomEquipe.getText().toString());
-                    EquipeHelper equipeHelper = new EquipeHelper(CreerUneBlessureActivity.this);
-                    Cursor curseurEquipe = equipeHelper.find(equipe);
-                    if(curseurEquipe!=null) {
-                        while (curseurEquipe.moveToNext()) {
-                            idEquipe = Integer.parseInt( curseurEquipe.getColumnName(curseurEquipe.getColumnIndex("id")) );
-                        }
-                    } else {
-                        equipeHelper.ajouterUneEquipe(equipe);
-                        curseurEquipe = equipeHelper.find(equipe);
-                        while (curseurEquipe.moveToNext()) {
-                            idEquipe = Integer.parseInt( curseurEquipe.getColumnName(curseurEquipe.getColumnIndex("id")) );
-                        }
-                    }
-                    // Vérification du idEcole
-                    int idEcole = -1;
-                    Ecole ecole = new Ecole();
-                    ecole.setNom(atxtNomEcole.getText().toString());
-                    EcoleHelper ecoleHelper = new EcoleHelper(CreerUneBlessureActivity.this);
-                    Cursor curseurEcole = ecoleHelper.find(ecole);
-                    if(curseurEcole!=null) {
-                        while (curseurEcole.moveToNext()) {
-                            idEcole = Integer.parseInt( curseurEcole.getColumnName(curseurEcole.getColumnIndex("id")) );
-                        }
-                    } else {
-                        ecoleHelper.ajouterUneEcole(ecole);
-                        curseurEcole = ecoleHelper.find(ecole);
-                        while(curseurEcole.moveToNext()) {
-                            idEcole = Integer.parseInt( curseurEcole.getColumnName(curseurEcole.getColumnIndex("id")) );
-                        }
-                    }
-                    // Vérification du idAthlete
-                    int idAthlete = -1;
-                    Athlete athlete = new Athlete();
-                    athlete.setNom(atxtNomPatient.getText().toString());
-                    athlete.setPrenom(atxtPrenomPatient.getText().toString());
-                    athlete.setNumeroJoueur(atxtNumeroJoueur.getText().toString());
-                    athlete.setIdEquipe(idEquipe);
-                    athlete.setIdEcole(idEcole);
-                    AthleteHelper athleteHelper = new AthleteHelper(CreerUneBlessureActivity.this);
-                    Cursor curseurAthlete = athleteHelper.find(athlete);
-                    if(curseurAthlete!=null) {
-                        while(curseurAthlete.moveToNext()) {
-                            idAthlete = Integer.parseInt( curseurAthlete.getColumnName(curseurAthlete.getColumnIndex("id")) );
-                        }
-                    } else {
-                        athleteHelper.ajouterUnAthlete(athlete);
-                        curseurAthlete = athleteHelper.find(athlete);
-                        while(curseurAthlete.moveToNext()) {
-                            idAthlete = Integer.parseInt( curseurAthlete.getColumnName(curseurAthlete.getColumnIndex("id")) );
-                        }
-                    }
-                    // Vérification du idEvenement
-                    int idEvenement = -1;
-                    Evenement evenement = new Evenement();
-                    evenement.setType(sTypeEvenement.getSelectedItem().toString());
-                    evenement.setJour(dpDateDeLaBlessure.getDayOfMonth());
-                    evenement.setMois(dpDateDeLaBlessure.getMonth());
-                    evenement.setAnnee(dpDateDeLaBlessure.getYear());
-                    EvenementHelper evenementHelper = new EvenementHelper(CreerUneBlessureActivity.this);
-                    Cursor curseurEvenement = evenementHelper.find(evenement);
-                    if(curseurEvenement!=null) {
-                        while(curseurEvenement.moveToNext()) {
-                            idEvenement = Integer.parseInt( curseurEvenement.getColumnName(curseurEvenement.getColumnIndex("id")) );
-                        }
-                    } else {
-                        evenementHelper.ajouterUnEvenement(evenement);
-                        curseurEvenement = evenementHelper.find(evenement);
-                        while(curseurEvenement.moveToNext()) {
-                            idEvenement = Integer.parseInt( curseurEvenement.getColumnName(curseurEvenement.getColumnIndex("id")) );
-                        }
-                    }
-                    // Vérification du idRaffinementMembre
-                    int idRaffinementMembre = -1;
-                    RaffinementMembre raffinementMembre = new RaffinementMembre();
-                    if(checkBoxes[7].isChecked() || checkBoxes[14].isChecked() || checkBoxes[19].isChecked())
-                        raffinementMembre.setMuscles(1);
-                    else
-                        raffinementMembre.setMuscles(0);
-                    if(checkBoxes[8].isChecked() || checkBoxes[20].isChecked())
-                        raffinementMembre.setLigaments(1);
-                    else
-                        raffinementMembre.setLigaments(0);
-                    if(checkBoxes[9].isChecked())
-                        raffinementMembre.setOs(1);
-                    else
-                        raffinementMembre.setOs(0);
-                    if(checkBoxes[10].isChecked())
-                        raffinementMembre.setNerfs(1);
-                    else
-                        raffinementMembre.setNerfs(0);
-                    if(checkBoxes[6].isChecked() || checkBoxes[11].isChecked() || checkBoxes[15].isChecked() || checkBoxes[21].isChecked() || checkBoxes[29].isChecked())
-                        raffinementMembre.setAutre(1);
-                    else
-                        raffinementMembre.setAutre(0);
-                    if(checkBoxes[0].isChecked())
-                        raffinementMembre.setRien(1);
-                    else
-                        raffinementMembre.setRien(0);
-                    if(checkBoxes[1].isChecked())
-                        raffinementMembre.setOeilDroit(1);
-                    else
-                        raffinementMembre.setOeilDroit(0);
-                    if (checkBoxes[2].isChecked())
-                        raffinementMembre.setOeilGauche(1);
-                    else
-                        raffinementMembre.setOeilGauche(0);
-                    if(checkBoxes[3].isChecked())
-                        raffinementMembre.setNez(1);
-                    else
-                        raffinementMembre.setNez(0);
-                    if(checkBoxes[4].isChecked())
-                        raffinementMembre.setBouche(1);
-                    else
-                        raffinementMembre.setBouche(0);
-                    if(checkBoxes[5].isChecked())
-                        raffinementMembre.setDents(1);
-                    else
-                        raffinementMembre.setDents(0);
-                    if(checkBoxes[12].isChecked())
-                        raffinementMembre.setSternum(1);
-                    else
-                        raffinementMembre.setSternum(0);
-                    if(checkBoxes[13].isChecked())
-                        raffinementMembre.setCotes(1);
-                    else
-                        raffinementMembre.setCotes(0);
-                    if(checkBoxes[16].isChecked())
-                        raffinementMembre.setSacrum(1);
-                    else
-                        raffinementMembre.setSacrum(0);
-                    if(checkBoxes[17].isChecked())
-                        raffinementMembre.setOsIliaque(1);
-                    else
-                        raffinementMembre.setOsIliaque(0);
-                    if(checkBoxes[18].isChecked())
-                        raffinementMembre.setCoccyx(1);
-                    else
-                        raffinementMembre.setCoccyx(0);
-                    if(checkBoxes[22].isChecked())
-                        raffinementMembre.setFoie(1);
-                    else
-                        raffinementMembre.setFoie(0);
-                    if(checkBoxes[23].isChecked())
-                        raffinementMembre.setRate(1);
-                    else
-                        raffinementMembre.setRate(0);
-                    if(checkBoxes[24].isChecked())
-                        raffinementMembre.setPancreas(1);
-                    else
-                        raffinementMembre.setPancreas(0);
-                    if(checkBoxes[25].isChecked())
-                        raffinementMembre.setRein(1);
-                    else
-                        raffinementMembre.setRein(0);
-                    if(checkBoxes[26].isChecked())
-                        raffinementMembre.setCoeur(1);
-                    else
-                        raffinementMembre.setCoeur(0);
-                    if(checkBoxes[27].isChecked())
-                        raffinementMembre.setPoumon(1);
-                    else
-                        raffinementMembre.setPoumon(0);
-                    if(checkBoxes[28].isChecked())
-                        raffinementMembre.setGenitaux(1);
-                    else
-                        raffinementMembre.setGenitaux(0);
-                    RaffinementMembreHelper raffinementMembreHelper = new RaffinementMembreHelper(CreerUneBlessureActivity.this);
-                    Cursor curseurRaffinementMembre = raffinementMembreHelper.find(raffinementMembre);
-                    if(curseurRaffinementMembre!=null) {
-                        while(curseurRaffinementMembre.moveToNext()) {
-                            idRaffinementMembre = Integer.parseInt( curseurRaffinementMembre.getColumnName(curseurRaffinementMembre.getColumnIndex("id")) );
-                        }
-                    } else {
-                        raffinementMembreHelper.ajouterUnRaffinementMembre(raffinementMembre);
-                        curseurRaffinementMembre = raffinementMembreHelper.find(raffinementMembre);
-                        while(curseurRaffinementMembre.moveToNext()) {
-                            idRaffinementMembre = Integer.parseInt( curseurRaffinementMembre.getColumnName(curseurRaffinementMembre.getColumnIndex("id")) );
-                        }
-                    }
-                    // Vérification du idRestriction
-                    int idRestriction = -1;
-                    Restriction restriction = new Restriction();
-                    if(checkBoxes[30].isChecked())
-                        restriction.setPratiqueAvecRestriction(1);
-                    else
-                        restriction.setPratiqueAvecRestriction(0);
-                    if(checkBoxes[31].isChecked())
-                        restriction.setPartieAvecRestriction(1);
-                    else
-                        restriction.setPartieAvecRestriction(0);
-                    if(checkBoxes[32].isChecked())
-                        restriction.setAucunePratique(1);
-                    else
-                        restriction.setAucunePratique(0);
-                    if(checkBoxes[33].isChecked())
-                        restriction.setAucunePartie(1);
-                    else
-                        restriction.setAucunePartie(0);
-                    if(checkBoxes[34].isChecked())
-                        restriction.setAucuneRestriction(1);
-                    else
-                        restriction.setAucuneRestriction(0);
-                    RestrictionHelper restrictionHelper = new RestrictionHelper(CreerUneBlessureActivity.this);
-                    Cursor curseurRestriction = restrictionHelper.find(restriction);
-                    if(curseurRestriction!=null) {
-                        while(curseurRestriction.moveToNext()) {
-                            idRestriction = Integer.parseInt( curseurRestriction.getColumnName(curseurRestriction.getColumnIndex("id")) );
-                        }
-                    } else {
-                        restrictionHelper.ajouterUneRestriction(restriction);
-                        curseurRestriction = restrictionHelper.find(restriction);
-                        while(curseurRestriction.moveToNext()) {
-                            idRestriction = Integer.parseInt( curseurRestriction.getColumnName(curseurRestriction.getColumnIndex("id")) );
-                        }
-                    }
-                    // Blessure
-                    Blessure blessure = new Blessure();
-                    blessure.setIdAthlete(idAthlete);
-                    blessure.setIdEvenement(idEvenement);
-                    blessure.setJourtRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth());
-                    blessure.setMoisRetourEntrainement(dpDateDeRetourEntrainement.getMonth());
-                    blessure.setAnneeRetourEntrainement(dpDateDeRetourEntrainement.getYear());
-                    blessure.setJourRetourJeu(dpDateRetourJeu.getDayOfMonth());
-                    blessure.setMoisRetourJeu(dpDateRetourJeu.getMonth());
-                    blessure.setAnneeRetourJeu(dpDateRetourJeu.getYear());
-                    blessure.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
-                    blessure.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
-                    blessure.setIdRaffinementMembre(idRaffinementMembre);
-                    blessure.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
-                    blessure.setIdRestriction(idRestriction);
-                    blessure.setDescriptionCondition(txtDescriptionDeLaCondition.getText().toString());
-                    blessure.setMecanismeBlessure(txtMecanismeDeBlessure.getText().toString());
-                    blessure.setSoapS(txtSoapS.getText().toString());
-                    blessure.setSoapO(txtSoapO.getText().toString());
-                    blessure.setSoapA(txtSoapA.getText().toString());
-                    blessure.setSoapP(txtSoapP.getText().toString());
-                    blessure.setCommentaire(txtAutreCommentaire.getText().toString());
-                    BlessureHelper blessureHelper = new BlessureHelper(CreerUneBlessureActivity.this);
-                    blessureHelper.ajouterUneBlessure(blessure);
-                } catch (DocumentException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    RapportAthleteHelper rapportAthleteHelper = new RapportAthleteHelper(CreerUneBlessureActivity.this);
+                    rapportAthleteHelper.ajouterUnRapportAthlete(tableRapportAthlete);
 
-                RapportTherapeute rapportTherapeute = new RapportTherapeute();
-                rapportTherapeute.setNomRapport("Rapport thérapeute du " + dpDateDeLaBlessure.getDayOfMonth() + "_" + dpDateDeLaBlessure.getMonth() + "_" + dpDateDeLaBlessure.getYear());
-                rapportTherapeute.setLogoPath(d.toString());
-                rapportTherapeute.setNomEcole(atxtNomEcole.getText().toString());
-                rapportTherapeute.setNomEquipe(atxtNomEquipe.getText().toString());
-                rapportTherapeute.setDateEvenement(dpDateDeLaBlessure.getDayOfMonth() + "/" + dpDateDeLaBlessure.getMonth() + "/" + dpDateDeLaBlessure.getYear());
-                List<String> liste = new ArrayList<String>();
-                liste = rapportTherapeute.getUneLigne();
-                liste.add(atxtNomPatient.getText().toString().toUpperCase() + ", " + atxtPrenomPatient.getText().toString());
-                liste.add(dpDateDeLaBlessure.getDayOfMonth() + "/" + dpDateDeLaBlessure.getMonth() + "/" + dpDateDeLaBlessure.getYear());
-                liste.add(dpDateDeRetourEntrainement.getDayOfMonth() + "/" + dpDateDeRetourEntrainement.getMonth() + "/" + dpDateDeRetourEntrainement.getYear());
-                liste.add(dpDateRetourJeu.getDayOfMonth() + "/" + dpDateRetourJeu.getMonth() + "/" + dpDateRetourJeu.getYear());
-                liste.add(sRegionAffectee.getSelectedItem().toString());
-                liste.add(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
-                String descriptionDetaillee = "";
-                for(int i=0; i < checkBoxes.length; i++) {
-                    if(checkBoxes[i].isChecked()) {
-                        descriptionDetaillee += checkBoxes[i].getText() + ", ";
+                    RapportAthlete rapportAthlete = new RapportAthlete(tableRapportAthlete);
+                    try {
+                        rapportAthlete.creeRapport();
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    /*
+                    Drawable d = getResources().getDrawable(R.drawable.acces_athletique_logo);
+                    try {
+                        rapportAthlete.setLogoPath(d.toString());
+                        rapportAthlete.setNomDuPatient(atxtNomPatient.getText().toString());
+                        rapportAthlete.setPrenomDuPatient(atxtPrenomPatient.getText().toString());
+                        rapportAthlete.setNomEquipe(atxtNomEquipe.getText().toString());
+                        rapportAthlete.setNomEcole(atxtNomEcole.getText().toString());
+                        rapportAthlete.setNumeroJoueur(atxtNumeroJoueur.getText().toString());
+                        rapportAthlete.setTypeEvenement(sTypeEvenement.getSelectedItem().toString());
+                        rapportAthlete.setDateDeLaBlessure(dpDateDeLaBlessure.getDayOfMonth() + "/" + dpDateDeLaBlessure.getMonth() + "/" + dpDateDeLaBlessure.getYear());
+                        rapportAthlete.setDateRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth() + "/" + dpDateDeRetourEntrainement.getMonth() + "/" + dpDateDeRetourEntrainement.getYear());
+                        rapportAthlete.setDateRetourJeu(dpDateRetourJeu.getDayOfMonth() + "/" + dpDateRetourJeu.getMonth() + "/" + dpDateRetourJeu.getYear());
+                        rapportAthlete.setRegionAffectee(sRegionAffectee.getSelectedItem().toString());
+                        rapportAthlete.setPrecisionRegionAffectee(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                        List<String> liste = new ArrayList<String>();
+                        for (int i = 0; i < checkBoxes.length; i++) {
+                            if (checkBoxes[i].isChecked()) {
+                                liste.add(checkBoxes[i].getText().toString());
+                            }
+                        }
+                        rapportAthlete.setListeDescriptionDetailleeRegionAffectee(liste);
+                        rapportAthlete.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
+                        List<String> listeRestriction = new ArrayList<String>();
+                        for (int i = 30; i < checkBoxes.length; i++) {
+                            if (checkBoxes[i].isChecked()) {
+                                listeRestriction.add(checkBoxes[i].getText().toString());
+                            }
+                        }
+                        rapportAthlete.setListeRestrictions(listeRestriction);
+                        rapportAthlete.setDescriptionDeLaCondition(txtDescriptionDeLaCondition.getText().toString());
+                        txtMecanismeDeBlessure = (EditText) findViewById(R.id.txtMecanismeDeBlessure);
+                        rapportAthlete.setMecanismeDeBlessure(txtMecanismeDeBlessure.getText().toString());
+                        TextView txtSoapS = (TextView) findViewById(R.id.txtSoapS);
+                        rapportAthlete.setSOAPS(txtSoapS.getText().toString());
+                        TextView txtSoapO = (TextView) findViewById(R.id.txtSoapO);
+                        rapportAthlete.setSOAPO(txtSoapO.getText().toString());
+                        TextView txtSoapA = (TextView) findViewById(R.id.txtSoapA);
+                        rapportAthlete.setSOAPA(txtSoapA.getText().toString());
+                        TextView txtSoapP = (TextView) findViewById(R.id.txtSoapP);
+                        rapportAthlete.setSOAPP(txtSoapP.getText().toString());
+                        TextView txtAutreCommentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
+                        rapportAthlete.setAutreCommentaire(txtAutreCommentaire.getText().toString());
+                        rapportAthlete.creeRapport();
+
+                        // Vérification du idEquipe
+                        int idEquipe = -1;
+                        Equipe equipe = new Equipe();
+                        equipe.setNom(atxtNomEquipe.getText().toString());
+                        EquipeHelper equipeHelper = new EquipeHelper(CreerUneBlessureActivity.this);
+                        Cursor curseurEquipe = equipeHelper.find(equipe);
+                        if (curseurEquipe != null) {
+                            while (curseurEquipe.moveToNext()) {
+                                idEquipe = Integer.parseInt(curseurEquipe.getColumnName(curseurEquipe.getColumnIndex("id")));
+                            }
+                        } else {
+                            equipeHelper.ajouterUneEquipe(equipe);
+                            curseurEquipe = equipeHelper.find(equipe);
+                            while (curseurEquipe.moveToNext()) {
+                                idEquipe = Integer.parseInt(curseurEquipe.getColumnName(curseurEquipe.getColumnIndex("id")));
+                            }
+                        }
+                        // Vérification du idEcole
+                        int idEcole = -1;
+                        Ecole ecole = new Ecole();
+                        ecole.setNom(atxtNomEcole.getText().toString());
+                        EcoleHelper ecoleHelper = new EcoleHelper(CreerUneBlessureActivity.this);
+                        Cursor curseurEcole = ecoleHelper.find(ecole);
+                        if (curseurEcole != null) {
+                            while (curseurEcole.moveToNext()) {
+                                idEcole = Integer.parseInt(curseurEcole.getColumnName(curseurEcole.getColumnIndex("id")));
+                            }
+                        } else {
+                            ecoleHelper.ajouterUneEcole(ecole);
+                            curseurEcole = ecoleHelper.find(ecole);
+                            while (curseurEcole.moveToNext()) {
+                                idEcole = Integer.parseInt(curseurEcole.getColumnName(curseurEcole.getColumnIndex("id")));
+                            }
+                        }
+                        // Vérification du idAthlete
+                        int idAthlete = -1;
+                        Athlete athlete = new Athlete();
+                        athlete.setNom(atxtNomPatient.getText().toString());
+                        athlete.setPrenom(atxtPrenomPatient.getText().toString());
+                        athlete.setNumeroJoueur(atxtNumeroJoueur.getText().toString());
+                        athlete.setIdEquipe(idEquipe);
+                        athlete.setIdEcole(idEcole);
+                        AthleteHelper athleteHelper = new AthleteHelper(CreerUneBlessureActivity.this);
+                        Cursor curseurAthlete = athleteHelper.find(athlete);
+                        if (curseurAthlete != null) {
+                            while (curseurAthlete.moveToNext()) {
+                                idAthlete = Integer.parseInt(curseurAthlete.getColumnName(curseurAthlete.getColumnIndex("id")));
+                            }
+                        } else {
+                            athleteHelper.ajouterUnAthlete(athlete);
+                            curseurAthlete = athleteHelper.find(athlete);
+                            while (curseurAthlete.moveToNext()) {
+                                idAthlete = Integer.parseInt(curseurAthlete.getColumnName(curseurAthlete.getColumnIndex("id")));
+                            }
+                        }
+                        // Vérification du idEvenement
+                        int idEvenement = -1;
+                        Evenement evenement = new Evenement();
+                        evenement.setType(sTypeEvenement.getSelectedItem().toString());
+                        evenement.setJour(dpDateDeLaBlessure.getDayOfMonth());
+                        evenement.setMois(dpDateDeLaBlessure.getMonth());
+                        evenement.setAnnee(dpDateDeLaBlessure.getYear());
+                        EvenementHelper evenementHelper = new EvenementHelper(CreerUneBlessureActivity.this);
+                        Cursor curseurEvenement = evenementHelper.find(evenement);
+                        if (curseurEvenement != null) {
+                            while (curseurEvenement.moveToNext()) {
+                                idEvenement = Integer.parseInt(curseurEvenement.getColumnName(curseurEvenement.getColumnIndex("id")));
+                            }
+                        } else {
+                            evenementHelper.ajouterUnEvenement(evenement);
+                            curseurEvenement = evenementHelper.find(evenement);
+                            while (curseurEvenement.moveToNext()) {
+                                idEvenement = Integer.parseInt(curseurEvenement.getColumnName(curseurEvenement.getColumnIndex("id")));
+                            }
+                        }
+                        // Vérification du idRaffinementMembre
+                        int idRaffinementMembre = -1;
+                        RaffinementMembre raffinementMembre = new RaffinementMembre();
+                        if (checkBoxes[7].isChecked() || checkBoxes[14].isChecked() || checkBoxes[19].isChecked())
+                            raffinementMembre.setMuscles(1);
+                        else
+                            raffinementMembre.setMuscles(0);
+                        if (checkBoxes[8].isChecked() || checkBoxes[20].isChecked())
+                            raffinementMembre.setLigaments(1);
+                        else
+                            raffinementMembre.setLigaments(0);
+                        if (checkBoxes[9].isChecked())
+                            raffinementMembre.setOs(1);
+                        else
+                            raffinementMembre.setOs(0);
+                        if (checkBoxes[10].isChecked())
+                            raffinementMembre.setNerfs(1);
+                        else
+                            raffinementMembre.setNerfs(0);
+                        if (checkBoxes[6].isChecked() || checkBoxes[11].isChecked() || checkBoxes[15].isChecked() || checkBoxes[21].isChecked() || checkBoxes[29].isChecked())
+                            raffinementMembre.setAutre(1);
+                        else
+                            raffinementMembre.setAutre(0);
+                        if (checkBoxes[0].isChecked())
+                            raffinementMembre.setRien(1);
+                        else
+                            raffinementMembre.setRien(0);
+                        if (checkBoxes[1].isChecked())
+                            raffinementMembre.setOeilDroit(1);
+                        else
+                            raffinementMembre.setOeilDroit(0);
+                        if (checkBoxes[2].isChecked())
+                            raffinementMembre.setOeilGauche(1);
+                        else
+                            raffinementMembre.setOeilGauche(0);
+                        if (checkBoxes[3].isChecked())
+                            raffinementMembre.setNez(1);
+                        else
+                            raffinementMembre.setNez(0);
+                        if (checkBoxes[4].isChecked())
+                            raffinementMembre.setBouche(1);
+                        else
+                            raffinementMembre.setBouche(0);
+                        if (checkBoxes[5].isChecked())
+                            raffinementMembre.setDents(1);
+                        else
+                            raffinementMembre.setDents(0);
+                        if (checkBoxes[12].isChecked())
+                            raffinementMembre.setSternum(1);
+                        else
+                            raffinementMembre.setSternum(0);
+                        if (checkBoxes[13].isChecked())
+                            raffinementMembre.setCotes(1);
+                        else
+                            raffinementMembre.setCotes(0);
+                        if (checkBoxes[16].isChecked())
+                            raffinementMembre.setSacrum(1);
+                        else
+                            raffinementMembre.setSacrum(0);
+                        if (checkBoxes[17].isChecked())
+                            raffinementMembre.setOsIliaque(1);
+                        else
+                            raffinementMembre.setOsIliaque(0);
+                        if (checkBoxes[18].isChecked())
+                            raffinementMembre.setCoccyx(1);
+                        else
+                            raffinementMembre.setCoccyx(0);
+                        if (checkBoxes[22].isChecked())
+                            raffinementMembre.setFoie(1);
+                        else
+                            raffinementMembre.setFoie(0);
+                        if (checkBoxes[23].isChecked())
+                            raffinementMembre.setRate(1);
+                        else
+                            raffinementMembre.setRate(0);
+                        if (checkBoxes[24].isChecked())
+                            raffinementMembre.setPancreas(1);
+                        else
+                            raffinementMembre.setPancreas(0);
+                        if (checkBoxes[25].isChecked())
+                            raffinementMembre.setRein(1);
+                        else
+                            raffinementMembre.setRein(0);
+                        if (checkBoxes[26].isChecked())
+                            raffinementMembre.setCoeur(1);
+                        else
+                            raffinementMembre.setCoeur(0);
+                        if (checkBoxes[27].isChecked())
+                            raffinementMembre.setPoumon(1);
+                        else
+                            raffinementMembre.setPoumon(0);
+                        if (checkBoxes[28].isChecked())
+                            raffinementMembre.setGenitaux(1);
+                        else
+                            raffinementMembre.setGenitaux(0);
+                        RaffinementMembreHelper raffinementMembreHelper = new RaffinementMembreHelper(CreerUneBlessureActivity.this);
+                        Cursor curseurRaffinementMembre = raffinementMembreHelper.find(raffinementMembre);
+                        if (curseurRaffinementMembre != null) {
+                            while (curseurRaffinementMembre.moveToNext()) {
+                                idRaffinementMembre = Integer.parseInt(curseurRaffinementMembre.getColumnName(curseurRaffinementMembre.getColumnIndex("id")));
+                            }
+                        } else {
+                            raffinementMembreHelper.ajouterUnRaffinementMembre(raffinementMembre);
+                            curseurRaffinementMembre = raffinementMembreHelper.find(raffinementMembre);
+                            while (curseurRaffinementMembre.moveToNext()) {
+                                idRaffinementMembre = Integer.parseInt(curseurRaffinementMembre.getColumnName(curseurRaffinementMembre.getColumnIndex("id")));
+                            }
+                        }
+                        // Vérification du idRestriction
+                        int idRestriction = -1;
+                        Restriction restriction = new Restriction();
+                        if (checkBoxes[30].isChecked())
+                            restriction.setPratiqueAvecRestriction(1);
+                        else
+                            restriction.setPratiqueAvecRestriction(0);
+                        if (checkBoxes[31].isChecked())
+                            restriction.setPartieAvecRestriction(1);
+                        else
+                            restriction.setPartieAvecRestriction(0);
+                        if (checkBoxes[32].isChecked())
+                            restriction.setAucunePratique(1);
+                        else
+                            restriction.setAucunePratique(0);
+                        if (checkBoxes[33].isChecked())
+                            restriction.setAucunePartie(1);
+                        else
+                            restriction.setAucunePartie(0);
+                        if (checkBoxes[34].isChecked())
+                            restriction.setAucuneRestriction(1);
+                        else
+                            restriction.setAucuneRestriction(0);
+                        RestrictionHelper restrictionHelper = new RestrictionHelper(CreerUneBlessureActivity.this);
+                        Cursor curseurRestriction = restrictionHelper.find(restriction);
+                        if (curseurRestriction != null) {
+                            while (curseurRestriction.moveToNext()) {
+                                idRestriction = Integer.parseInt(curseurRestriction.getColumnName(curseurRestriction.getColumnIndex("id")));
+                            }
+                        } else {
+                            restrictionHelper.ajouterUneRestriction(restriction);
+                            curseurRestriction = restrictionHelper.find(restriction);
+                            while (curseurRestriction.moveToNext()) {
+                                idRestriction = Integer.parseInt(curseurRestriction.getColumnName(curseurRestriction.getColumnIndex("id")));
+                            }
+                        }
+                        // Blessure
+                        Blessure blessure = new Blessure();
+                        blessure.setIdAthlete(idAthlete);
+                        blessure.setIdEvenement(idEvenement);
+                        blessure.setJourtRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth());
+                        blessure.setMoisRetourEntrainement(dpDateDeRetourEntrainement.getMonth());
+                        blessure.setAnneeRetourEntrainement(dpDateDeRetourEntrainement.getYear());
+                        blessure.setJourRetourJeu(dpDateRetourJeu.getDayOfMonth());
+                        blessure.setMoisRetourJeu(dpDateRetourJeu.getMonth());
+                        blessure.setAnneeRetourJeu(dpDateRetourJeu.getYear());
+                        blessure.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
+                        blessure.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                        blessure.setIdRaffinementMembre(idRaffinementMembre);
+                        blessure.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
+                        blessure.setIdRestriction(idRestriction);
+                        blessure.setDescriptionCondition(txtDescriptionDeLaCondition.getText().toString());
+                        blessure.setMecanismeBlessure(txtMecanismeDeBlessure.getText().toString());
+                        blessure.setSoapS(txtSoapS.getText().toString());
+                        blessure.setSoapO(txtSoapO.getText().toString());
+                        blessure.setSoapA(txtSoapA.getText().toString());
+                        blessure.setSoapP(txtSoapP.getText().toString());
+                        blessure.setCommentaire(txtAutreCommentaire.getText().toString());
+                        BlessureHelper blessureHelper = new BlessureHelper(CreerUneBlessureActivity.this);
+                        blessureHelper.ajouterUneBlessure(blessure);
+
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    */
+                    TableRapportTherapeute tableRapportTherapeute = new TableRapportTherapeute();
+                    tableRapportTherapeute.setNomEcole(atxtNomEcole.getText().toString());
+                    tableRapportTherapeute.setNomEquipe(atxtNomEquipe.getText().toString());
+                    tableRapportTherapeute.setJourEvenement(dpDateDeLaBlessure.getDayOfMonth());
+                    tableRapportTherapeute.setMoisEvenement(dpDateDeLaBlessure.getMonth());
+                    tableRapportTherapeute.setAnneeEvenement(dpDateDeLaBlessure.getYear());
+                    tableRapportTherapeute.setNomPatient(atxtNomPatient.getText().toString());
+                    tableRapportTherapeute.setPrenomPatient(atxtPrenomPatient.getText().toString());
+                    tableRapportTherapeute.setJourBlessure(dpDateDeLaBlessure.getDayOfMonth());
+                    tableRapportTherapeute.setMoisBlessure(dpDateDeLaBlessure.getMonth());
+                    tableRapportTherapeute.setAnneeBlessure(dpDateDeLaBlessure.getYear());
+                    tableRapportTherapeute.setJourRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth());
+                    tableRapportTherapeute.setMoisRetourEntrainement(dpDateDeRetourEntrainement.getMonth());
+                    tableRapportTherapeute.setAnneeRetourEntrainement(dpDateDeRetourEntrainement.getYear());
+                    tableRapportTherapeute.setJourRetourJeu(dpDateRetourJeu.getDayOfMonth());
+                    tableRapportTherapeute.setMoisRetourJeu(dpDateRetourJeu.getMonth());
+                    tableRapportTherapeute.setAnneeRetourJeu(dpDateRetourJeu.getYear());
+                    tableRapportTherapeute.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
+                    tableRapportTherapeute.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                    tableRapportTherapeute.setRaffinementMembre(listeRaffinementMembre.toString());
+                    tableRapportTherapeute.setSoapA(soapA.getText().toString());
+                    tableRapportTherapeute.setCommentaire(commentaire.getText().toString());
+
+                    RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(CreerUneBlessureActivity.this);
+                    rapportTherapeuteHelper.ajouterUnRapportTherapeute(tableRapportTherapeute);
+
+                    RapportTherapeute rapportTherapeute = new RapportTherapeute(tableRapportTherapeute);
+                    rapportTherapeute.creerRapport();
+                    /*
+                    RapportTherapeute rapportTherapeute = new RapportTherapeute();
+                    rapportTherapeute.setNomRapport("Rapport thérapeute du " + dpDateDeLaBlessure.getDayOfMonth() + "_" + dpDateDeLaBlessure.getMonth() + "_" + dpDateDeLaBlessure.getYear());
+                    //rapportTherapeute.setLogoPath(d.toString());
+                    rapportTherapeute.setNomEcole(atxtNomEcole.getText().toString());
+                    rapportTherapeute.setNomEquipe(atxtNomEquipe.getText().toString());
+                    rapportTherapeute.setDateEvenement(dpDateDeLaBlessure.getDayOfMonth() + "/" + dpDateDeLaBlessure.getMonth() + "/" + dpDateDeLaBlessure.getYear());
+                    List<String> liste = new ArrayList<String>();
+                    liste = rapportTherapeute.getUneLigne();
+                    liste.add(atxtNomPatient.getText().toString().toUpperCase() + ", " + atxtPrenomPatient.getText().toString());
+                    liste.add(dpDateDeLaBlessure.getDayOfMonth() + "/" + dpDateDeLaBlessure.getMonth() + "/" + dpDateDeLaBlessure.getYear());
+                    liste.add(dpDateDeRetourEntrainement.getDayOfMonth() + "/" + dpDateDeRetourEntrainement.getMonth() + "/" + dpDateDeRetourEntrainement.getYear());
+                    liste.add(dpDateRetourJeu.getDayOfMonth() + "/" + dpDateRetourJeu.getMonth() + "/" + dpDateRetourJeu.getYear());
+                    liste.add(sRegionAffectee.getSelectedItem().toString());
+                    liste.add(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                    String descriptionDetaillee = "";
+                    for (int i = 0; i < checkBoxes.length; i++) {
+                        if (checkBoxes[i].isChecked()) {
+                            descriptionDetaillee += checkBoxes[i].getText() + ", ";
+                        }
+                    }
+                    liste.add(descriptionDetaillee);
+                    soapA = (TextView) findViewById(R.id.txtSoapA);
+                    liste.add(soapA.getText().toString());
+                    TextView txtCommentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
+                    liste.add(txtCommentaire.getText().toString());
+                    rapportTherapeute.creerRapport();
+                    */
+
+                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Les rapports ont été générés.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(36);
+                    toast.show();
                 }
-                liste.add(descriptionDetaillee);
-                TextView soapA = (TextView) findViewById(R.id.txtSoapA);
-                liste.add(soapA.getText().toString());
-                TextView txtCommentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
-                liste.add(txtCommentaire.getText().toString());
-                rapportTherapeute.creerRapport();
-                Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Les rapports ont été générés.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                ViewGroup group = (ViewGroup) toast.getView();
-                TextView messageTextView = (TextView) group.getChildAt(0);
-                messageTextView.setTextSize(36);
-                toast.show();
             }
         });
         /*Toast toast = Toast.makeText(this, "View.GONE = " + mesLinearLayout[5].getVisibility() + "\nView.VISIBLE = " + mesLinearLayout[0].getVisibility(), Toast.LENGTH_LONG);

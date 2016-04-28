@@ -44,6 +44,23 @@ public class RapportTherapeute {
     //Tableau
     private List<String> uneLigne = new ArrayList();
 
+    public RapportTherapeute(TableRapportTherapeute tableRapportTherapeute) {
+        this.nomEcole = tableRapportTherapeute.getNomEcole();
+        this.nomEquipe = tableRapportTherapeute.getNomEquipe();
+        this.dateEvenement = tableRapportTherapeute.getJourEvenement() + "/" + tableRapportTherapeute.getMoisEvenement() + "/" + tableRapportTherapeute.getAnneeEvenement();
+        this.uneLigne = new ArrayList<>();
+        this.uneLigne.add(tableRapportTherapeute.getNomPatient().toUpperCase() + ", " + tableRapportTherapeute.getPrenomPatient().toLowerCase());
+        this.uneLigne.add(tableRapportTherapeute.getJourBlessure() + "/" + tableRapportTherapeute.getMoisBlessure() + "/" + tableRapportTherapeute.getAnneeBlessure());
+        this.uneLigne.add(tableRapportTherapeute.getJourRetourEntrainement() + "/" + tableRapportTherapeute.getMoisRetourEntrainement() + "/" + tableRapportTherapeute.getAnneeRetourEntrainement());
+        this.uneLigne.add(tableRapportTherapeute.getJourRetourJeu() + "/" + tableRapportTherapeute.getMoisRetourJeu() + "/" + tableRapportTherapeute.getAnneeRetourJeu());
+        this.uneLigne.add(tableRapportTherapeute.getMembreAffecte());
+        this.uneLigne.add(tableRapportTherapeute.getPrecisionMembre());
+        this.uneLigne.add(tableRapportTherapeute.getRaffinementMembre());
+        this.uneLigne.add(tableRapportTherapeute.getSoapA());
+        this.uneLigne.add(tableRapportTherapeute.getCommentaire());
+        this.nomRapport = tableRapportTherapeute.getJourBlessure() + "_" + tableRapportTherapeute.getMoisBlessure() + "_" + tableRapportTherapeute.getAnneeBlessure() + "_Rapport Thérapeute";
+    }
+
     public String getNomRapport() { return nomRapport; }
     public void setNomRapport(String nomRapport) { this.nomRapport = nomRapport; }
     public String getLogoPath() { return logoPath; }

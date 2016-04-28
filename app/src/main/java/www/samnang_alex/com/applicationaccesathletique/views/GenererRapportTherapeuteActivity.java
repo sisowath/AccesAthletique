@@ -66,6 +66,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                 jour = dpDateDuRapport.getDayOfMonth();
                 mois = dpDateDuRapport.getMonth();
                 annee = dpDateDuRapport.getYear();
+                /*
                 Evenement evenement = new Evenement();
                 evenement.setJour(jour);
                 evenement.setMois(mois);
@@ -179,6 +180,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                     messageTextView.setTextSize(24);
                     toast.show();
                 }
+                */
             }
         });
     }
