@@ -5,6 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.IntegerRes;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import www.samnang_alex.com.applicationaccesathletique.models.Ecole;
 
 public class EcoleHelper extends SQLiteOpenHelper {
@@ -80,5 +85,31 @@ public class EcoleHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id = " + ecole.getId(), null);
         db.close();
         return cursor;
+    }
+    public String findNameById(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nom FROM " + TABLE_NAME + " WHERE id = " + id, null);
+        db.close();
+        return cursor.getColumnName(cursor.getColumnIndex("nom"));
+    }
+    public int getNombreEcolesAssocies(int idEvenement) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(id) FROM " + TABLE_NAME + " WHERE id IN (" +
+            "SELECT idEcole FROM Athlete WHERE id IN (" +
+            "SELECT idAthlete FROM Blessure WHERE idEvenement = " + idEvenement + "))", null);
+        db.close();
+        return Integer.parseInt( cursor.getColumnName(cursor.getColumnIndex("COUNT(id)")) );
+    }
+    public List<String> getListeNomsEcoles(int idEvenement) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nom FROM " + TABLE_NAME + " WHERE id IN (" +
+                "SELECT idEcole FROM Athlete WHERE id IN (" +
+                "SELECT idAthlete FROM Blessure WHERE idEvenement = " + idEvenement + "))", null);
+        db.close();
+        List<String> listeNomsEcoles = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            listeNomsEcoles.add(cursor.getColumnName(cursor.getColumnIndex("nom")));
+        }
+        return listeNomsEcoles;
     }
 }

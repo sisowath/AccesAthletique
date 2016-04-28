@@ -82,4 +82,10 @@ public class EquipeHelper extends SQLiteOpenHelper {
         db.close();
         return cursor;
     }
+    public String findNameById(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nom FROM " + TABLE_EQUIPE + " WHERE id = " + id, null);
+        db.close();
+        return cursor.getColumnName(cursor.getColumnIndex("nom"));
+    }
 }

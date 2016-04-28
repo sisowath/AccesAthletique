@@ -170,4 +170,11 @@ public class BlessureHelper extends SQLiteOpenHelper {
         db.close();
         return cursor;
     }
+    public int getNombreBlessuresAssocies(Blessure blessure) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(id) FROM " + TABLE_NAME + " WHERE idEvenement = " + blessure.getIdEvenement(), null);
+        cursor.moveToNext();
+        db.close();
+        return Integer.parseInt( cursor.getColumnName(cursor.getColumnIndex("COUNT(id)")) );
+    }
 }
