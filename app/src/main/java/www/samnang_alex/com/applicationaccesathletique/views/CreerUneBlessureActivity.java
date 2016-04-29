@@ -516,7 +516,7 @@ public class CreerUneBlessureActivity extends Activity {
                     String listeRaffinementMembre = "";
                     for (int i = 0; i < 30; i++) {
                         if (checkBoxes[i].isChecked()) {
-                            listeRaffinementMembre += "+ " + checkBoxes[i].getText().toString();
+                            listeRaffinementMembre += " *" + checkBoxes[i].getText().toString();
                         }
                     }
                     tableRapportAthlete.setRaffinementMembre(listeRaffinementMembre);
@@ -524,7 +524,7 @@ public class CreerUneBlessureActivity extends Activity {
                     String listeRestriction = "";
                     for (int i = 30; i < 35; i++) {
                         if (checkBoxes[i].isChecked()) {
-                            listeRestriction += "+ " + checkBoxes[i].getText().toString();
+                            listeRestriction += " *" + checkBoxes[i].getText().toString();
                         }
                     }
                     tableRapportAthlete.setRestriction(listeRestriction);

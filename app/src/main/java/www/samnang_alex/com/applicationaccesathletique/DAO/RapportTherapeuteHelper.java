@@ -84,13 +84,13 @@ public class RapportTherapeuteHelper extends SQLiteOpenHelper {
     }
     public boolean ajouterUnRapportTherapeute(TableRapportTherapeute tableRapportTherapeute) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NOMECOLE, tableRapportTherapeute.getNomEcole());
-        contentValues.put(COLUMN_NOMEQUIPE, tableRapportTherapeute.getNomEquipe());
+        contentValues.put(COLUMN_NOMECOLE, tableRapportTherapeute.getNomEcole().toLowerCase());
+        contentValues.put(COLUMN_NOMEQUIPE, tableRapportTherapeute.getNomEquipe().toLowerCase());
         contentValues.put(COLUMN_JOUREVENEMENT, tableRapportTherapeute.getJourEvenement());
         contentValues.put(COLUMN_MOISEVENEMENT, tableRapportTherapeute.getMoisEvenement());
         contentValues.put(COLUMN_ANNEEEVENEMENT, tableRapportTherapeute.getAnneeEvenement());
-        contentValues.put(COLUMN_NOMPATIENT, tableRapportTherapeute.getNomPatient());
-        contentValues.put(COLUMN_PRENOMPATIENT, tableRapportTherapeute.getPrenomPatient());
+        contentValues.put(COLUMN_NOMPATIENT, tableRapportTherapeute.getNomPatient().toLowerCase());
+        contentValues.put(COLUMN_PRENOMPATIENT, tableRapportTherapeute.getPrenomPatient().toLowerCase());
         contentValues.put(COLUMN_JOURBLESSURE, tableRapportTherapeute.getJourBlessure());
         contentValues.put(COLUMN_MOISBLESSURE, tableRapportTherapeute.getMoisBlessure());
         contentValues.put(COLUMN_ANNEEBLESSURE, tableRapportTherapeute.getAnneeBlessure());
@@ -113,7 +113,17 @@ public class RapportTherapeuteHelper extends SQLiteOpenHelper {
     public Cursor findAll() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-        db.close();
+        //db.close();
+        return cursor;
+    }
+    public Cursor findSchoolTeamNameByDate(int jour, int mois, int annee) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nomEcole, nomEquipe FROM " + TABLE_NAME + " WHERE jourEvenement = " + jour + " AND moisEvenement = " + mois + " AND anneeEvenement = " + annee + " ORDER BY nomEcole, nomEquipe", null);
+        return cursor;
+    }
+    public Cursor findAllBySchoolTeamDate(String nomEcole, String nomEquipe, int jour, int mois, int annee) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE nomEcole = '" + nomEcole + "' AND nomEquipe = '" + nomEquipe + "' AND jourEvenement = " + jour + " AND moisEvenement = " + mois + " AND anneeEvenement = " + annee + " ORDER BY id", null);
         return cursor;
     }
     public Cursor findByDate(int jour, int mois, int annee) {

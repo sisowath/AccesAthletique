@@ -80,6 +80,34 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                 mois = dpDateDuRapport.getMonth();
                 annee = dpDateDuRapport.getYear();
                 RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(GenererRapportTherapeuteActivity.this);
+                // Création des rapports pour thérapeute regroupés par école
+                Cursor curseurSchoolTeamName = rapportTherapeuteHelper.findSchoolTeamNameByDate(jour, mois, annee);
+                while(curseurSchoolTeamName.moveToNext()) {
+                    String nomEcole = curseurSchoolTeamName.getString(curseurSchoolTeamName.getColumnIndex("nomEcole"));
+                    String nomEquipe = curseurSchoolTeamName.getString(curseurSchoolTeamName.getColumnIndex("nomEquipe"));
+                    RapportTherapeute rapportTherapeute = new RapportTherapeute();
+                    rapportTherapeute.setNomEcole(nomEcole);
+                    rapportTherapeute.setNomEquipe(nomEquipe);
+                    rapportTherapeute.setDateEvenement( jour + "/" + mois + "/" + annee );
+                    rapportTherapeute.setNomRapport(jour + "_" + mois + "_" + annee + " - Rapport " + nomEcole + ":" + nomEquipe);
+                    Cursor curseurAthletesBlesses = rapportTherapeuteHelper.findAllBySchoolTeamDate(nomEcole, nomEquipe, jour, mois, annee);
+                    List<String> uneLigne = new ArrayList<String>();
+                    while(curseurAthletesBlesses.moveToNext()) {
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("nomPatient")).toUpperCase() + " - " + curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("prenomPatient")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("jourBlessure")) + "/" + curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("moisBlessure")) + "/" + curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("anneeBlessure")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("jourRetourEntrainement")) + "/" + curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("moisRetourEntrainement")) + "/" + curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("anneeRetourEntrainement")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("jourRetourJeu")) + "/" + curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("moisRetourJeu")) + "/" + curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("anneeRetourJeu")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("membreAffecte")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("precisionMembre")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("raffinementMembre")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("soapA")));
+                        uneLigne.add(curseurAthletesBlesses.getString(curseurAthletesBlesses.getColumnIndex("commentaire")));
+                    }
+                    rapportTherapeute.setUneLigne(uneLigne);
+                    rapportTherapeute.creerRapport();
+                }
+
+                // Création du fichier CSV pour Excel
                 Cursor curseurRapportTherapeute = rapportTherapeuteHelper.findByDate(jour, mois, annee);
                 //curseurRapportTherapeute.moveToFirst();
                 if(curseurRapportTherapeute.moveToNext()) {

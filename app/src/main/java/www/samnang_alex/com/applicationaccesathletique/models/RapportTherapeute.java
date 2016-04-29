@@ -44,6 +44,7 @@ public class RapportTherapeute {
     //Tableau
     private List<String> uneLigne = new ArrayList();
 
+    public RapportTherapeute() { }
     public RapportTherapeute(TableRapportTherapeute tableRapportTherapeute) {
         this.nomEcole = tableRapportTherapeute.getNomEcole();
         this.nomEquipe = tableRapportTherapeute.getNomEquipe();
