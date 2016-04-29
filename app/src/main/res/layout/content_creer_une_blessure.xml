@@ -21,8 +21,7 @@
             android:text="Coordonnées du patient"
             android:textAlignment="center"
             android:gravity="center"
-            android:textSize="36sp"
-            android:layout_marginTop="50dp" />
+            android:textSize="36sp" />
         <AutoCompleteTextView
             android:id="@+id/atxtNomPatient"
             android:layout_width="match_parent"

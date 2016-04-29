@@ -60,8 +60,8 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generer_rapport_therapeute);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
         lblDateDuRapport = (TextView) findViewById(R.id.lblDateDuRapport);
         lblDateDuRapport.setBackgroundColor(Color.parseColor("#ffffb2"));
@@ -142,7 +142,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                         compteurLignes++;
                     }while(curseurRapportTherapeute.moveToNext());
                     printWriter.close();
-                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, "BRAVO ! " + compteurLignes + " blessure a été bien enregistré le " + jour + "/" + mois + "/" + annee + " - \n" + message, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, "BRAVO ! " + compteurLignes + " blessure a été bien enregistré le " + jour + "/" + mois + "/" + annee /*+ " - \n" + message*/, Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     ViewGroup group = (ViewGroup) toast.getView();
                     TextView messageTextView = (TextView) group.getChildAt(0);

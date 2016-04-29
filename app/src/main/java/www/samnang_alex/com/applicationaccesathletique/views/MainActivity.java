@@ -1,6 +1,7 @@
 package www.samnang_alex.com.applicationaccesathletique.views;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -118,18 +119,40 @@ public class MainActivity extends Activity {
         btnResetDatabase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RapportAthleteHelper rapportAthleteHelper = new RapportAthleteHelper(MainActivity.this);
-                rapportAthleteHelper.dropTable();
-                RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(MainActivity.this);
-                rapportTherapeuteHelper.dropTable();
-                Toast toast = Toast.makeText(MainActivity.this, "Les tables ont été supprimées avec succès !", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                ViewGroup group = (ViewGroup) toast.getView();
-                TextView messageTextView = (TextView) group.getChildAt(0);
-                messageTextView.setTextColor(Color.WHITE);
-                messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
-                messageTextView.setTextSize(36);
-                toast.show();
+            new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Avertissement")
+                .setMessage("Attention ! Voulez-vous vraiment réinitialiser la base de données ?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(/*android.R.string.yes*/"Oui", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        RapportAthleteHelper rapportAthleteHelper = new RapportAthleteHelper(MainActivity.this);
+                        rapportAthleteHelper.dropTable();
+                        RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(MainActivity.this);
+                        rapportTherapeuteHelper.dropTable();
+                        Toast toast = Toast.makeText(MainActivity.this, "Les tables ont été supprimées avec succès !", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        ViewGroup group = (ViewGroup) toast.getView();
+                        TextView messageTextView = (TextView) group.getChildAt(0);
+                        messageTextView.setTextColor(Color.WHITE);
+                        messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
+                        messageTextView.setTextSize(36);
+                        toast.show();
+                    }
+                })
+                .setNegativeButton(/*android.R.string.no*/"Non", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast toast = Toast.makeText(MainActivity.this, "Aucune suppression a été fait.", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        ViewGroup group = (ViewGroup) toast.getView();
+                        TextView messageTextView = (TextView) group.getChildAt(0);
+                        messageTextView.setTextColor(Color.WHITE);
+                        //messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
+                        messageTextView.setTextSize(36);
+                        toast.show();
+                    }
+                }).show();
             }
         });
         Display display = getWindowManager().getDefaultDisplay();
@@ -142,7 +165,7 @@ public class MainActivity extends Activity {
             lp.setMargins(0, 500, 0, 0);
             logo.setLayoutParams(lp);*/
             lblCoordonnesEntreprise.setTextSize(18);
-            lp.setMargins(50, 80, 50, 0);
+            lp.setMargins(50, 100, 50, 0);
             btnCreerUneBlessure.setLayoutParams(lp);
             lp.setMargins(50, 20, 50, 20);
             btnAjouterUnEvenement.setLayoutParams(lp);
@@ -154,6 +177,8 @@ public class MainActivity extends Activity {
                 http://stackoverflow.com/questions/12728255/in-android-how-do-i-set-margins-in-dp-programmatically
             */
         }
+        btnAjouterUnEvenement.setVisibility(View.GONE);
+        btnGestionDeLaBD.setVisibility(View.GONE);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
