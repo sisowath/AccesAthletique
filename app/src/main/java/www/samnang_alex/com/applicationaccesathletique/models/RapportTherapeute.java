@@ -33,7 +33,7 @@ public class RapportTherapeute {
     public static final Font colonneHeader = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD, BaseColor.BLACK);
     public static final Font FONTCOURRIEL = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD | Font.UNDERLINE, BaseColor.BLUE);
     public static final Font FONTNORMAL = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL, BaseColor.BLACK);
-    public static final Font FONTNORMALUNDERLINE = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL | Font.UNDERLINE, BaseColor.BLACK);
+    public static final Font FONTNORMALUNDERLINE = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL /*| Font.UNDERLINE*/, BaseColor.BLACK);
 
     private String nomRapport;
     private String logoPath;

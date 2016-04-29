@@ -463,7 +463,7 @@ public class CreerUneBlessureActivity extends Activity {
                     atxtPrenomPatient.requestFocus();
                 } else if (atxtNomEquipe.length() == 0) {
                     scrollView.smoothScrollTo(0, atxtNomEquipe.getBottom() - 200);
-                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Attention ! Vous avez oublié le nom de l'équipe.", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Attention ! Vous avez oublié la discipline sportive.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     ViewGroup group = (ViewGroup) toast.getView();
                     TextView messageTextView = (TextView) group.getChildAt(0);
@@ -874,8 +874,10 @@ public class CreerUneBlessureActivity extends Activity {
                     RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(CreerUneBlessureActivity.this);
                     rapportTherapeuteHelper.ajouterUnRapportTherapeute(tableRapportTherapeute);
 
+                    /*
                     RapportTherapeute rapportTherapeute = new RapportTherapeute(tableRapportTherapeute);
                     rapportTherapeute.creerRapport();
+                    */
                     /*
                     RapportTherapeute rapportTherapeute = new RapportTherapeute();
                     rapportTherapeute.setNomRapport("Rapport thérapeute du " + dpDateDeLaBlessure.getDayOfMonth() + "_" + dpDateDeLaBlessure.getMonth() + "_" + dpDateDeLaBlessure.getYear());

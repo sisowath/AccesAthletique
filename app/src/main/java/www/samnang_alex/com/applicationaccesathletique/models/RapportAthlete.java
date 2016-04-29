@@ -34,7 +34,7 @@ public class RapportAthlete {
     public static final Font BOLD_UNDERLINED = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD | Font.UNDERLINE);
     public static final Font mesTitres = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLDITALIC, BaseColor.BLACK);
     public static final Font mesSousTitres = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL, BaseColor.BLACK);
-    public static final Font FONTNORMALUNDERLINED = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL | Font.UNDERLINE, BaseColor.BLACK);
+    public static final Font FONTNORMALUNDERLINED = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL /*| Font.UNDERLINE*/, BaseColor.BLACK);
     public static final Font FONTNORMAL = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL, BaseColor.BLACK);
 
     private String nomDuRapport;

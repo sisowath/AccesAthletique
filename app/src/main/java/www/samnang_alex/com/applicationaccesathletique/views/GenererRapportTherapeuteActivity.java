@@ -108,7 +108,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                 }
 
                 // Création du fichier CSV pour Excel
-                Cursor curseurRapportTherapeute = rapportTherapeuteHelper.findByDate(jour, mois, annee);
+                Cursor curseurRapportTherapeute = rapportTherapeuteHelper.findAll();/*rapportTherapeuteHelper.findByDate(jour, mois, annee);*/
                 //curseurRapportTherapeute.moveToFirst();
                 if(curseurRapportTherapeute.moveToNext()) {
                     File fichier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), jour + "_" + mois + "_" + annee + " - CSV.txt");
@@ -142,7 +142,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                         compteurLignes++;
                     }while(curseurRapportTherapeute.moveToNext());
                     printWriter.close();
-                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, "BRAVO ! " + compteurLignes + " blessure a été bien enregistré le " + jour + "/" + mois + "/" + annee /*+ " - \n" + message*/, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, "BRAVO ! " + compteurLignes + " blessure(s) a été bien enregistré jusqu'à le " + jour + "/" + mois + "/" + annee /*+ " - \n" + message*/, Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     ViewGroup group = (ViewGroup) toast.getView();
                     TextView messageTextView = (TextView) group.getChildAt(0);

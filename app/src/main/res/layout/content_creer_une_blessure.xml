@@ -38,7 +38,7 @@
             android:id="@+id/atxtNomEquipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nom de l'équipe"
+            android:hint="Discipline sportive"
             android:textSize="24sp"/>
         <AutoCompleteTextView
             android:id="@+id/atxtNomEcole"

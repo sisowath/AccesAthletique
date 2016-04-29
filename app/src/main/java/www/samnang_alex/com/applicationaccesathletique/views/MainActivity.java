@@ -3,9 +3,11 @@ package www.samnang_alex.com.applicationaccesathletique.views;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
@@ -24,6 +26,12 @@ import android.widget.Toast;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.Calendar;
+
 import www.samnang_alex.com.applicationaccesathletique.DAO.RapportAthleteHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.RapportTherapeuteHelper;
 import www.samnang_alex.com.applicationaccesathletique.R;
@@ -36,6 +44,7 @@ public class MainActivity extends Activity {
     Button btnAjouterUnEvenement;
     Button btnGenererRapport;
     Button btnGestionDeLaBD;
+    Button btnGenererCSV;
     Button btnResetDatabase;
     TextView lblCopyrightSamnang;
 
@@ -113,6 +122,63 @@ public class MainActivity extends Activity {
                 toast.show();
             }
         });
+        btnGenererCSV = (Button) findViewById(R.id.btnGenererCSV);
+        btnGenererCSV.setBackgroundColor(Color.parseColor("#0080ff"));
+        btnGenererCSV.setTextColor(Color.WHITE);
+        btnGenererCSV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Création du fichier CSV pour Excel
+                Calendar calendar = Calendar.getInstance();
+                int jour = calendar.get(Calendar.DAY_OF_MONTH);
+                int mois = calendar.get(Calendar.MONTH);
+                int annee = calendar.get(Calendar.YEAR);
+                RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(MainActivity.this);
+                Cursor curseurRapportTherapeute = rapportTherapeuteHelper.findAll();/*rapportTherapeuteHelper.findByDate(jour, mois, annee);*/
+                //curseurRapportTherapeute.moveToFirst();
+                if (curseurRapportTherapeute.moveToNext()) {
+                    File fichier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), jour + "_" + mois + "_" + annee + " - CSV.txt");
+                    FileOutputStream fileOutputStream = null;
+                    try {
+                        fileOutputStream = new FileOutputStream(fichier);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    PrintWriter printWriter = new PrintWriter(fileOutputStream);
+                    String message = "";
+                    int compteurLignes = 0;
+                    printWriter.println("Nom École, Nom Équipe, Date de l'événement, Nom du patient, Date de la blessure, Date de retour à l'entrainement, Date de retour au jeu, Membre affecté, Précision sur le membre, Raffinement sur le membre, SO(A)P, Commentaire/Recommandations");
+                    printWriter.flush();
+                    do {
+                        String nomEcole = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomEcole"));
+                        String nomEquipe = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomEquipe"));
+                        String dateEvenement = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourEvenement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisEvenement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeEvenement"));
+                        String nomPrenomPatient = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomPatient")).toUpperCase() + "-" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("prenomPatient"));
+                        String dateDeLaBlessure = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourBlessure")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisBlessure")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeBlessure"));
+                        String dateRetourEntrainement = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourRetourEntrainement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisRetourEntrainement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeRetourEntrainement"));
+                        String dateRetourJeu = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourRetourJeu")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisRetourJeu")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeRetourJeu"));
+                        String membreAffecte = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("membreAffecte"));
+                        String precisionMembre = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("precisionMembre"));
+                        String raffinementMembre = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("raffinementMembre"));
+                        String soapA = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("soapA"));
+                        String commentaire = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("commentaire"));
+                        printWriter.println(nomEcole + "," + nomEquipe + "," + dateEvenement + "," + nomPrenomPatient + "," + dateDeLaBlessure + "," + dateRetourEntrainement + "," + dateRetourJeu + "," + membreAffecte + "," + precisionMembre + "," + raffinementMembre + "," + soapA + "," + commentaire);
+                        printWriter.flush();
+                        message += curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("id")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomPatient")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("prenomPatient")) + "\n";
+                        compteurLignes++;
+                    } while (curseurRapportTherapeute.moveToNext());
+                    printWriter.close();
+                    Toast toast = Toast.makeText(MainActivity.this, "BRAVO ! Votre fichier < " + jour + "_" + mois + "_" + annee + " - CSV.txt > a été créé.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                }
+            }
+        });
         btnResetDatabase = (Button) findViewById(R.id.btnResetDatabase);
         btnResetDatabase.setBackgroundColor(Color.parseColor("#0080ff"));
         btnResetDatabase.setTextColor(Color.WHITE);
@@ -171,6 +237,7 @@ public class MainActivity extends Activity {
             btnAjouterUnEvenement.setLayoutParams(lp);
             btnGenererRapport.setLayoutParams(lp);
             btnGestionDeLaBD.setLayoutParams(lp);
+            btnGenererCSV.setLayoutParams(lp);
             btnResetDatabase.setLayoutParams(lp);
             /* Source de :
                 http://stackoverflow.com/questions/1016896/get-screen-dimensions-in-pixels
