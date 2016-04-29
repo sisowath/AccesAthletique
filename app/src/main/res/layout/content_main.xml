@@ -65,6 +65,7 @@
             android:textAlignment="center"
             android:textSize="24sp"
             android:textAllCaps="false"/>
+
         <Button
             android:id="@+id/btnGestionDeLaBD"
             android:layout_width="match_parent"
@@ -77,6 +78,17 @@
             android:textSize="24sp"
             android:textAllCaps="false"/>
 
+        <Button
+            android:id="@+id/btnResetDatabase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:text="Reset DB"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 </ScrollView>

@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 
+import www.samnang_alex.com.applicationaccesathletique.DAO.RapportAthleteHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.RapportTherapeuteHelper;
 import www.samnang_alex.com.applicationaccesathletique.R;
 
 public class MainActivity extends Activity {
@@ -33,6 +35,7 @@ public class MainActivity extends Activity {
     Button btnAjouterUnEvenement;
     Button btnGenererRapport;
     Button btnGestionDeLaBD;
+    Button btnResetDatabase;
     TextView lblCopyrightSamnang;
 
     public static final Font BOLD_UNDERLINED = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD | Font.UNDERLINE);
@@ -109,6 +112,26 @@ public class MainActivity extends Activity {
                 toast.show();
             }
         });
+        btnResetDatabase = (Button) findViewById(R.id.btnResetDatabase);
+        btnResetDatabase.setBackgroundColor(Color.parseColor("#0080ff"));
+        btnResetDatabase.setTextColor(Color.WHITE);
+        btnResetDatabase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RapportAthleteHelper rapportAthleteHelper = new RapportAthleteHelper(MainActivity.this);
+                rapportAthleteHelper.dropTable();
+                RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(MainActivity.this);
+                rapportTherapeuteHelper.dropTable();
+                Toast toast = Toast.makeText(MainActivity.this, "Les tables ont été supprimées avec succès !", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                ViewGroup group = (ViewGroup) toast.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextColor(Color.WHITE);
+                messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
+                messageTextView.setTextSize(36);
+                toast.show();
+            }
+        });
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -125,6 +148,7 @@ public class MainActivity extends Activity {
             btnAjouterUnEvenement.setLayoutParams(lp);
             btnGenererRapport.setLayoutParams(lp);
             btnGestionDeLaBD.setLayoutParams(lp);
+            btnResetDatabase.setLayoutParams(lp);
             /* Source de :
                 http://stackoverflow.com/questions/1016896/get-screen-dimensions-in-pixels
                 http://stackoverflow.com/questions/12728255/in-android-how-do-i-set-margins-in-dp-programmatically

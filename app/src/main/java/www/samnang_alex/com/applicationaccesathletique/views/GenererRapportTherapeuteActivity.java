@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,6 +20,13 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +38,7 @@ import www.samnang_alex.com.applicationaccesathletique.DAO.EcoleHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.EquipeHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.EvenementHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.RaffinementMembreHelper;
+import www.samnang_alex.com.applicationaccesathletique.DAO.RapportTherapeuteHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.RestrictionHelper;
 import www.samnang_alex.com.applicationaccesathletique.R;
 import www.samnang_alex.com.applicationaccesathletique.models.Athlete;
@@ -59,6 +71,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
 
         btnGenererRapportTherapeute = (Button) findViewById(R.id.btnGenererRapportTherapeute);
         btnGenererRapportTherapeute.setBackgroundColor(Color.parseColor("#ff6666"));
+        btnGenererRapportTherapeute.setTypeface(null, Typeface.BOLD);
         btnGenererRapportTherapeute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +79,59 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                 jour = dpDateDuRapport.getDayOfMonth();
                 mois = dpDateDuRapport.getMonth();
                 annee = dpDateDuRapport.getYear();
+                RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(GenererRapportTherapeuteActivity.this);
+                Cursor curseurRapportTherapeute = rapportTherapeuteHelper.findByDate(jour, mois, annee);
+                //curseurRapportTherapeute.moveToFirst();
+                if(curseurRapportTherapeute.moveToNext()) {
+                    File fichier = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), jour + "_" + mois + "_" + annee + " - CSV.txt");
+                    FileOutputStream fileOutputStream = null;
+                    try {
+                        fileOutputStream = new FileOutputStream(fichier);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    PrintWriter printWriter = new PrintWriter(fileOutputStream);
+                    String message = "";
+                    int compteurLignes = 0;
+                    printWriter.println("Nom École, Nom Équipe, Date de l'événement, Nom du patient, Date de la blessure, Date de retour à l'entrainement, Date de retour au jeu, Membre affecté, Précision sur le membre, Raffinement sur le membre, SO(A)P, Commentaire/Recommandations");
+                    printWriter.flush();
+                    do {
+                        String nomEcole = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomEcole"));
+                        String nomEquipe = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomEquipe"));
+                        String dateEvenement = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourEvenement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisEvenement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeEvenement"));
+                        String nomPrenomPatient = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomPatient")).toUpperCase() + "-" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("prenomPatient"));
+                        String dateDeLaBlessure = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourBlessure")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisBlessure")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeBlessure"));
+                        String dateRetourEntrainement = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourRetourEntrainement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisRetourEntrainement")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeRetourEntrainement"));
+                        String dateRetourJeu = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("jourRetourJeu")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("moisRetourJeu")) + "/" + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("anneeRetourJeu"));
+                        String membreAffecte = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("membreAffecte"));
+                        String precisionMembre = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("precisionMembre"));
+                        String raffinementMembre = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("raffinementMembre"));
+                        String soapA = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("soapA"));
+                        String commentaire = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("commentaire"));
+                        printWriter.println(nomEcole + "," + nomEquipe + "," + dateEvenement + "," + nomPrenomPatient + "," + dateDeLaBlessure + "," + dateRetourEntrainement + "," + dateRetourJeu + "," + membreAffecte + "," + precisionMembre + "," + raffinementMembre + "," + soapA + "," + commentaire);
+                        printWriter.flush();
+                        message += curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("id")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomPatient")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("prenomPatient")) + "\n";
+                        compteurLignes++;
+                    }while(curseurRapportTherapeute.moveToNext());
+                    printWriter.close();
+                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, "BRAVO ! " + compteurLignes + " blessure a été bien enregistré le " + jour + "/" + mois + "/" + annee + " - \n" + message, Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, "Désolé. Aucune blessure a été enregistrée le " + jour + "/" + mois + "/" + annee, Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setBackgroundColor(Color.parseColor("#ffdb99"));
+                    messageTextView.setTextSize(24);
+                    toast.show();
+                }
                 /*
                 Evenement evenement = new Evenement();
                 evenement.setJour(jour);

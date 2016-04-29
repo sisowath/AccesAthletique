@@ -513,21 +513,21 @@ public class CreerUneBlessureActivity extends Activity {
                     tableRapportAthlete.setAnneeRetourJeu(dpDateRetourJeu.getYear());
                     tableRapportAthlete.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
                     tableRapportAthlete.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
-                    List<String> listeRaffinementMembre = new ArrayList<String>();
+                    String listeRaffinementMembre = "";
                     for (int i = 0; i < 30; i++) {
                         if (checkBoxes[i].isChecked()) {
-                            listeRaffinementMembre.add(checkBoxes[i].getText().toString());
+                            listeRaffinementMembre += "+ " + checkBoxes[i].getText().toString();
                         }
                     }
-                    tableRapportAthlete.setRaffinementMembre(listeRaffinementMembre.toString());
+                    tableRapportAthlete.setRaffinementMembre(listeRaffinementMembre);
                     tableRapportAthlete.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
-                    List<String> listeRestriction = new ArrayList<String>();
+                    String listeRestriction = "";
                     for (int i = 30; i < 35; i++) {
                         if (checkBoxes[i].isChecked()) {
-                            listeRestriction.add(checkBoxes[i].getText().toString());
+                            listeRestriction += "+ " + checkBoxes[i].getText().toString();
                         }
                     }
-                    tableRapportAthlete.setRestriction(listeRestriction.toString());
+                    tableRapportAthlete.setRestriction(listeRestriction);
                     tableRapportAthlete.setDescriptionCondition(txtDescriptionDeLaCondition.getText().toString());
                     TextView mecanismeBlessure = (TextView) findViewById(R.id.txtMecanismeDeBlessure);
                     tableRapportAthlete.setMecanismeBlessure(mecanismeBlessure.getText().toString());
@@ -867,7 +867,7 @@ public class CreerUneBlessureActivity extends Activity {
                     tableRapportTherapeute.setAnneeRetourJeu(dpDateRetourJeu.getYear());
                     tableRapportTherapeute.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
                     tableRapportTherapeute.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
-                    tableRapportTherapeute.setRaffinementMembre(listeRaffinementMembre.toString());
+                    tableRapportTherapeute.setRaffinementMembre(listeRaffinementMembre);
                     tableRapportTherapeute.setSoapA(soapA.getText().toString());
                     tableRapportTherapeute.setCommentaire(commentaire.getText().toString());
 
@@ -909,6 +909,8 @@ public class CreerUneBlessureActivity extends Activity {
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     ViewGroup group = (ViewGroup) toast.getView();
                     TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextColor(Color.WHITE);
+                    messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
                     messageTextView.setTextSize(36);
                     toast.show();
                 }

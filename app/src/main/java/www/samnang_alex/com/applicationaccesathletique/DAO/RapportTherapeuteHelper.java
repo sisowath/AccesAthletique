@@ -47,29 +47,34 @@ public class RapportTherapeuteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            COLUMN_NOMECOLE + " TEXT NOT NULL," +
-            COLUMN_NOMEQUIPE + " TEXT NOT NULL," +
-            COLUMN_JOUREVENEMENT + " INTEGER CHECK ( " + COLUMN_JOUREVENEMENT + " BETWEEN 1 AND 31 )," +
-            COLUMN_MOISEVENEMENT + " INTEGER CHECK ( " + COLUMN_MOISEVENEMENT + " BETWEEN 1 AND 12 )," +
-            COLUMN_ANNEEEVENEMENT + " INTEGER CHECK ( " + COLUMN_ANNEEEVENEMENT + " > 2000 )," +
-            COLUMN_NOMPATIENT + " TEXT," +
-            COLUMN_PRENOMPATIENT + " TEXT," +
-            COLUMN_JOURBLESSURE + " INTEGER CHECK ( " + COLUMN_JOURBLESSURE + " BETWEEN 1 AND 31 )," +
-            COLUMN_MOISBLESSURE + " INTEGER CHECK ( " + COLUMN_MOISBLESSURE + " BETWEEN 1 AND 12 )," +
-            COLUMN_ANNEEBLESSURE + " INTEGER CHECK ( " + COLUMN_ANNEEBLESSURE + " > 2000 )," +
-            COLUMN_JOURRETOURENTRAINEMENT + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_JOURRETOURENTRAINEMENT + " BETWEEN 1 AND 31 )," +
-            COLUMN_MOISRETOURENTRAINEMENT + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_MOISRETOURENTRAINEMENT + " BETWEEN 1 AND 12 )," +
-            COLUMN_ANNEERETOURENTRAINEMENT + " INTEGER CHECK ( " + COLUMN_ANNEERETOURENTRAINEMENT + " > 2000 )," +
-            COLUMN_JOURRETOURJEU + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_JOURRETOURJEU + " BETWEEN 1 AND 31 )," +
-            COLUMN_MOISRETOURJEU + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_MOISRETOURJEU + " BETWEEN 1 AND 12 )," +
-            COLUMN_ANNEERETOURJEU + " INTEGER CHECK ( " + COLUMN_ANNEERETOURJEU+ " > 2000 )," +
-            COLUMN_MEMBREAFFECTE + " TEXT," +
-            COLUMN_PRECISIONMEMBRE + " TEXT," +
-            COLUMN_RAFFINEMENTMEMBRE + " TEXT," +
-            COLUMN_SOAPA + " TEXT," +
-            COLUMN_COMMENTAIRE + " TEXT)");
-        db.close();
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_NOMECOLE + " TEXT NOT NULL," +
+                COLUMN_NOMEQUIPE + " TEXT NOT NULL," +
+                COLUMN_JOUREVENEMENT + " INTEGER CHECK ( " + COLUMN_JOUREVENEMENT + " BETWEEN 1 AND 31 )," +
+                COLUMN_MOISEVENEMENT + " INTEGER CHECK ( " + COLUMN_MOISEVENEMENT + " BETWEEN 1 AND 12 )," +
+                COLUMN_ANNEEEVENEMENT + " INTEGER CHECK ( " + COLUMN_ANNEEEVENEMENT + " > 2000 )," +
+                COLUMN_NOMPATIENT + " TEXT," +
+                COLUMN_PRENOMPATIENT + " TEXT," +
+                COLUMN_JOURBLESSURE + " INTEGER CHECK ( " + COLUMN_JOURBLESSURE + " BETWEEN 1 AND 31 )," +
+                COLUMN_MOISBLESSURE + " INTEGER CHECK ( " + COLUMN_MOISBLESSURE + " BETWEEN 1 AND 12 )," +
+                COLUMN_ANNEEBLESSURE + " INTEGER CHECK ( " + COLUMN_ANNEEBLESSURE + " > 2000 )," +
+                COLUMN_JOURRETOURENTRAINEMENT + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_JOURRETOURENTRAINEMENT + " BETWEEN 1 AND 31 )," +
+                COLUMN_MOISRETOURENTRAINEMENT + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_MOISRETOURENTRAINEMENT + " BETWEEN 1 AND 12 )," +
+                COLUMN_ANNEERETOURENTRAINEMENT + " INTEGER CHECK ( " + COLUMN_ANNEERETOURENTRAINEMENT + " > 2000 )," +
+                COLUMN_JOURRETOURJEU + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_JOURRETOURJEU + " BETWEEN 1 AND 31 )," +
+                COLUMN_MOISRETOURJEU + " INTEGER DEFAULT 1 CHECK ( " + COLUMN_MOISRETOURJEU + " BETWEEN 1 AND 12 )," +
+                COLUMN_ANNEERETOURJEU + " INTEGER CHECK ( " + COLUMN_ANNEERETOURJEU + " > 2000 )," +
+                COLUMN_MEMBREAFFECTE + " TEXT," +
+                COLUMN_PRECISIONMEMBRE + " TEXT," +
+                COLUMN_RAFFINEMENTMEMBRE + " TEXT," +
+                COLUMN_SOAPA + " TEXT," +
+                COLUMN_COMMENTAIRE + " TEXT)");
+        //db.close();
+    }
+
+    public void dropTable() {
+        SQLiteDatabase db = getWritableDatabase();
+        onUpgrade(db, 1, 1);
     }
 
     @Override
@@ -114,7 +119,7 @@ public class RapportTherapeuteHelper extends SQLiteOpenHelper {
     public Cursor findByDate(int jour, int mois, int annee) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_JOUREVENEMENT + " = " + jour + " AND " + COLUMN_MOISEVENEMENT + " = " + mois + " AND " + COLUMN_ANNEEEVENEMENT + " = " + annee, null);
-        db.close();
+        //db.close();
         return cursor;
     }
 }
