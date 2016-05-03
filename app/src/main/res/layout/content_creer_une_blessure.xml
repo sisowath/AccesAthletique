@@ -79,10 +79,18 @@
             android:paddingLeft="30dp"
             android:text="Date de la blessure"
             android:textSize="24sp" />
-        <DatePicker
+        <!--DatePicker
             android:id="@+id/dpDateDeLaBlessure"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" /-->
+        <EditText
+            android:id="@+id/txtDateBlessure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Appuyer ici"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:gravity="center"/>
         <TextView
             android:id="@+id/lblDateDeRetourEntrainement"
             android:layout_width="match_parent"
@@ -90,10 +98,19 @@
             android:paddingLeft="30dp"
             android:text="Date de retour à l'entraînement"
             android:textSize="24sp" />
-        <DatePicker
+        <!--DatePicker
             android:id="@+id/dpDateDeRetourEntrainement"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" /-->
+        <EditText
+            android:id="@+id/txtDateRetourEntrainement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Appuyer ici"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:gravity="center"/>
+
         <TextView
             android:id="@+id/lblDateDeRetourAuJeu"
             android:layout_width="match_parent"
@@ -101,10 +118,18 @@
             android:paddingLeft="30dp"
             android:text="Date de retour au jeu"
             android:textSize="24sp" />
-        <DatePicker
+        <!--DatePicker
             android:id="@+id/dpDateDeRetourAuJeu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" /-->
+        <EditText
+            android:id="@+id/txtDateRetourJeu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Appuyer ici"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:gravity="center"/>
         <TextView
             android:id="@+id/lblDescriptionDeLaBlessure"
             android:layout_width="match_parent"

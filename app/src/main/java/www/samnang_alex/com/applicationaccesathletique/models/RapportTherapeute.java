@@ -97,7 +97,7 @@ public class RapportTherapeute {
             Paragraph paragraphNomEcole = new Paragraph(new Chunk("Nom de l'école : ", FONTENTETENORMAL));
             paragraphNomEcole.add(new Chunk(this.nomEcole, FONTNORMALUNDERLINE));
             colonneDetails.addElement(paragraphNomEcole);
-            Paragraph paragraphNomEquipe = new Paragraph(new Chunk("Nom de l'équipe : ", FONTENTETENORMAL));
+            Paragraph paragraphNomEquipe = new Paragraph(new Chunk("Discipline sportive : ", FONTENTETENORMAL));
             paragraphNomEquipe.add(new Chunk(this.nomEquipe, FONTNORMALUNDERLINE));
             colonneDetails.addElement(paragraphNomEquipe);
             paragraphNomEquipe.add(new Chunk(this.nomEquipe, FONTNORMALUNDERLINE));

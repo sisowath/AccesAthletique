@@ -1,10 +1,14 @@
 package www.samnang_alex.com.applicationaccesathletique.views;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +30,11 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import www.samnang_alex.com.applicationaccesathletique.DAO.AthleteHelper;
 import www.samnang_alex.com.applicationaccesathletique.DAO.BlessureHelper;
@@ -69,8 +76,14 @@ public class CreerUneBlessureActivity extends Activity {
     TextView lblTypeEvenement;
     Spinner sTypeEvenement;
     TextView lblDateDeLaBlessure;
+    EditText txtDateDeLaBlessure;
+    int jourDeLaBlessure, moisDeLaBlessure, anneeDeLaBlessure;
     TextView lblDateDeRetourEntrainement;
+    EditText txtDateRetourEntrainement;
+    int jourRetourEntrainement, moisRetourEntrainement, anneeRetourEntrainement;
     TextView lblDateDeRetourAuJeu;
+    EditText txtDateRetourJeu;
+    int jourRetourJeu, moisRetourJeu, anneeRetourJeu;
     TextView lblDescriptionDeLaBlessure;
     TextView lblRegionAffectee;
     Spinner sRegionAffectee;
@@ -151,14 +164,14 @@ public class CreerUneBlessureActivity extends Activity {
         atxtNomEcole.setAdapter(dataAdapter);
         atxtNomEcole.setThreshold(3);
         atxtNumeroJoueur = (AutoCompleteTextView) findViewById(R.id.atxtNumeroJoueur);
-        dpDateDeRetourEntrainement = (DatePicker) findViewById(R.id.dpDateDeRetourEntrainement);
+        //dpDateDeRetourEntrainement = (DatePicker) findViewById(R.id.dpDateDeRetourEntrainement);
         /*final Calendar c = Calendar.getInstance();
         annee = c.get(Calendar.YEAR);
         mois = c.get(Calendar.MONTH);
         jour = c.get(Calendar.DAY_OF_MONTH);
         dpDateDeLaBlessure.init(annee, mois, jour, null);
         dpDateDeRetourEntrainement.init(annee, mois, jour, null);*/
-        dpDateRetourJeu = (DatePicker) findViewById(R.id.dpDateDeRetourAuJeu);
+        //dpDateRetourJeu = (DatePicker) findViewById(R.id.dpDateDeRetourAuJeu);
 
         mesLinearLayout[0] = (LinearLayout) findViewById(R.id.llRien);
         mesLinearLayout[1] = (LinearLayout) findViewById(R.id.llVisage);
@@ -209,12 +222,75 @@ public class CreerUneBlessureActivity extends Activity {
         listeDesRegionsAffectees.add("Cou");
         listeDesRegionsAffectees.add("Tronc");
         listeDesRegionsAffectees.add("Membre supérieur gauche");
-        listeDesRegionsAffectees.add("Membre supérieur droite");
+        listeDesRegionsAffectees.add("Membre supérieur droit");
         listeDesRegionsAffectees.add("Membre inférieur gauche");
-        listeDesRegionsAffectees.add("Membre inférieur droite");
+        listeDesRegionsAffectees.add("Membre inférieur droit");
         sRegionAffectee.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_item, listeDesRegionsAffectees));/*
         Source de : http://stackoverflow.com/questions/9476665/how-to-change-spinner-text-size-and-text-color */
-        dpDateDeLaBlessure = (DatePicker) findViewById(R.id.dpDateDeLaBlessure);
+
+        txtDateDeLaBlessure = (EditText) findViewById(R.id.txtDateBlessure);
+        txtDateDeLaBlessure.setInputType(InputType.TYPE_NULL);
+        final Calendar newCalendar = Calendar.getInstance();
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        txtDateDeLaBlessure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreerUneBlessureActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        jourDeLaBlessure = dayOfMonth;
+                        moisDeLaBlessure = monthOfYear;
+                        anneeDeLaBlessure = year;
+                        txtDateDeLaBlessure.setText(dateFormatter.format(newDate.getTime()));
+                        txtDateDeLaBlessure.setTextColor(Color.BLUE);
+                    }
+                },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        });
+        txtDateRetourEntrainement = (EditText) findViewById(R.id.txtDateRetourEntrainement);
+        txtDateRetourEntrainement.setInputType(InputType.TYPE_NULL);
+        txtDateRetourEntrainement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreerUneBlessureActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        jourRetourEntrainement = dayOfMonth;
+                        moisRetourEntrainement = monthOfYear;
+                        anneeRetourEntrainement = year;
+                        txtDateRetourEntrainement.setText(dateFormatter.format(newDate.getTime()));
+                        txtDateRetourEntrainement.setTextColor(Color.BLUE);
+                    }
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        });
+        txtDateRetourJeu = (EditText) findViewById(R.id.txtDateRetourJeu);
+        txtDateRetourJeu.setInputType(InputType.TYPE_NULL);
+        txtDateRetourJeu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreerUneBlessureActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        jourRetourJeu = dayOfMonth;
+                        moisRetourJeu = monthOfYear;
+                        anneeRetourJeu = year;
+                        txtDateRetourJeu.setText(dateFormatter.format(newDate.getTime()));
+                        txtDateRetourJeu.setTextColor(Color.BLUE);
+                    }
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        });
+        //dpDateDeLaBlessure = (DatePicker) findViewById(R.id.dpDateDeLaBlessure);
         lblPrecisionSurLaRegionAffectee = (TextView) findViewById(R.id.lblPrecisionSurLaRegionAffectee);
         lblPrecisionSurLaRegionAffectee.setBackgroundColor(Color.parseColor("#9999ff"));
         lblPrecisionSurLaRegionAffectee.setTextColor(Color.BLACK);
@@ -250,7 +326,7 @@ public class CreerUneBlessureActivity extends Activity {
                         listeDesOptions.add("Autre");
                         break;
                     case "Membre supérieur gauche":
-                    case "Membre supérieur droite":
+                    case "Membre supérieur droit":
                         listeDesOptions.add("Épaule");
                         listeDesOptions.add("Bras");
                         listeDesOptions.add("Coude");
@@ -260,7 +336,7 @@ public class CreerUneBlessureActivity extends Activity {
                         listeDesOptions.add("Autre");
                         break;
                     case "Membre inférieur gauche":
-                    case "Membre inférieur droite":
+                    case "Membre inférieur droit":
                         listeDesOptions.add("Hanche");
                         listeDesOptions.add("Cuisse");
                         listeDesOptions.add("Genou");
@@ -495,64 +571,122 @@ public class CreerUneBlessureActivity extends Activity {
                     toast.show();
                     atxtNumeroJoueur.requestFocus();
                 } else {
-                    TableRapportAthlete tableRapportAthlete = new TableRapportAthlete();
-                    tableRapportAthlete.setNomAthlete(atxtNomPatient.getText().toString());
-                    tableRapportAthlete.setPrenomAthlete(atxtPrenomPatient.getText().toString());
-                    tableRapportAthlete.setNomEquipe(atxtNomEquipe.getText().toString());
-                    tableRapportAthlete.setNomEcole(atxtNomEcole.getText().toString());
-                    tableRapportAthlete.setNumeroJoueur(Integer.parseInt(atxtNumeroJoueur.getText().toString()));
-                    tableRapportAthlete.setJourBlessure(dpDateDeLaBlessure.getDayOfMonth());
-                    tableRapportAthlete.setMoisBlessure(dpDateDeLaBlessure.getMonth());
-                    tableRapportAthlete.setAnneeBlessure(dpDateDeLaBlessure.getYear());
-                    tableRapportAthlete.setTypeEvenement(sTypeEvenement.getSelectedItem().toString());
-                    tableRapportAthlete.setJourRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth());
-                    tableRapportAthlete.setMoisRetourEntrainement(dpDateDeRetourEntrainement.getMonth());
-                    tableRapportAthlete.setAnneeRetourEntrainement(dpDateDeRetourEntrainement.getYear());
-                    tableRapportAthlete.setJourRetourJeu(dpDateRetourJeu.getDayOfMonth());
-                    tableRapportAthlete.setMoisRetourJeu(dpDateRetourJeu.getMonth());
-                    tableRapportAthlete.setAnneeRetourJeu(dpDateRetourJeu.getYear());
-                    tableRapportAthlete.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
-                    tableRapportAthlete.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
-                    String listeRaffinementMembre = "";
-                    for (int i = 0; i < 30; i++) {
-                        if (checkBoxes[i].isChecked()) {
-                            listeRaffinementMembre += " *" + checkBoxes[i].getText().toString();
-                        }
-                    }
-                    tableRapportAthlete.setRaffinementMembre(listeRaffinementMembre);
-                    tableRapportAthlete.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
-                    String listeRestriction = "";
-                    for (int i = 30; i < 35; i++) {
-                        if (checkBoxes[i].isChecked()) {
-                            listeRestriction += " *" + checkBoxes[i].getText().toString();
-                        }
-                    }
-                    tableRapportAthlete.setRestriction(listeRestriction);
-                    tableRapportAthlete.setDescriptionCondition(txtDescriptionDeLaCondition.getText().toString());
-                    TextView mecanismeBlessure = (TextView) findViewById(R.id.txtMecanismeDeBlessure);
-                    tableRapportAthlete.setMecanismeBlessure(mecanismeBlessure.getText().toString());
-                    TextView soapS = (TextView) findViewById(R.id.txtSoapS);
-                    tableRapportAthlete.setSoapS(soapS.getText().toString());
-                    TextView soapO = (TextView) findViewById(R.id.txtSoapO);
-                    tableRapportAthlete.setSoapO(soapO.getText().toString());
-                    TextView soapA = (TextView) findViewById(R.id.txtSoapA);
-                    tableRapportAthlete.setSoapA(soapA.getText().toString());
-                    TextView soapP = (TextView) findViewById(R.id.txtSoapP);
-                    tableRapportAthlete.setSoapP(soapP.getText().toString());
-                    TextView commentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
-                    tableRapportAthlete.setCommentaire(commentaire.getText().toString());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreerUneBlessureActivity.this);
+                    alertDialogBuilder.setMessage("Attention ! Êtes-vous sûr de vouloir sauvegarder le rapport ?");
 
-                    RapportAthleteHelper rapportAthleteHelper = new RapportAthleteHelper(CreerUneBlessureActivity.this);
-                    rapportAthleteHelper.ajouterUnRapportAthlete(tableRapportAthlete);
+                    alertDialogBuilder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            TableRapportAthlete tableRapportAthlete = new TableRapportAthlete();
+                            tableRapportAthlete.setNomAthlete(atxtNomPatient.getText().toString());
+                            tableRapportAthlete.setPrenomAthlete(atxtPrenomPatient.getText().toString());
+                            tableRapportAthlete.setNomEquipe(atxtNomEquipe.getText().toString());
+                            tableRapportAthlete.setNomEcole(atxtNomEcole.getText().toString());
+                            tableRapportAthlete.setNumeroJoueur(Integer.parseInt(atxtNumeroJoueur.getText().toString()));
+                            tableRapportAthlete.setJourBlessure(jourDeLaBlessure/*dpDateDeLaBlessure.getDayOfMonth()*/);
+                            tableRapportAthlete.setMoisBlessure(moisDeLaBlessure/*dpDateDeLaBlessure.getMonth()*/);
+                            tableRapportAthlete.setAnneeBlessure(anneeDeLaBlessure/*dpDateDeLaBlessure.getYear()*/);
+                            tableRapportAthlete.setTypeEvenement(sTypeEvenement.getSelectedItem().toString());
+                            tableRapportAthlete.setJourRetourEntrainement(jourRetourEntrainement/*dpDateDeRetourEntrainement.getDayOfMonth()*/);
+                            tableRapportAthlete.setMoisRetourEntrainement(moisRetourEntrainement/*dpDateDeRetourEntrainement.getMonth()*/);
+                            tableRapportAthlete.setAnneeRetourEntrainement(anneeRetourEntrainement/*dpDateDeRetourEntrainement.getYear()*/);
+                            tableRapportAthlete.setJourRetourJeu(jourRetourJeu/*dpDateRetourJeu.getDayOfMonth()*/);
+                            tableRapportAthlete.setMoisRetourJeu(moisRetourJeu/*dpDateRetourJeu.getMonth()*/);
+                            tableRapportAthlete.setAnneeRetourJeu(anneeRetourJeu/*dpDateRetourJeu.getYear()*/);
+                            tableRapportAthlete.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
+                            tableRapportAthlete.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                            String listeRaffinementMembre = "";
+                            for (int i = 0; i < 30; i++) {
+                                if (checkBoxes[i].isChecked()) {
+                                    listeRaffinementMembre += " *" + checkBoxes[i].getText().toString();
+                                }
+                            }
+                            tableRapportAthlete.setRaffinementMembre(listeRaffinementMembre);
+                            tableRapportAthlete.setContexte(sContexteDeLaBlessure.getSelectedItem().toString());
+                            String listeRestriction = "";
+                            for (int i = 30; i < 35; i++) {
+                                if (checkBoxes[i].isChecked()) {
+                                    listeRestriction += " *" + checkBoxes[i].getText().toString();
+                                }
+                            }
+                            tableRapportAthlete.setRestriction(listeRestriction);
+                            tableRapportAthlete.setDescriptionCondition(txtDescriptionDeLaCondition.getText().toString());
+                            TextView mecanismeBlessure = (TextView) findViewById(R.id.txtMecanismeDeBlessure);
+                            tableRapportAthlete.setMecanismeBlessure(mecanismeBlessure.getText().toString());
+                            TextView soapS = (TextView) findViewById(R.id.txtSoapS);
+                            tableRapportAthlete.setSoapS(soapS.getText().toString());
+                            TextView soapO = (TextView) findViewById(R.id.txtSoapO);
+                            tableRapportAthlete.setSoapO(soapO.getText().toString());
+                            TextView soapA = (TextView) findViewById(R.id.txtSoapA);
+                            tableRapportAthlete.setSoapA(soapA.getText().toString());
+                            TextView soapP = (TextView) findViewById(R.id.txtSoapP);
+                            tableRapportAthlete.setSoapP(soapP.getText().toString());
+                            TextView commentaire = (TextView) findViewById(R.id.txtAutreCommentaireRecommandation);
+                            tableRapportAthlete.setCommentaire(commentaire.getText().toString());
 
-                    RapportAthlete rapportAthlete = new RapportAthlete(tableRapportAthlete);
-                    try {
-                        rapportAthlete.creeRapport();
-                    } catch (DocumentException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                            RapportAthleteHelper rapportAthleteHelper = new RapportAthleteHelper(CreerUneBlessureActivity.this);
+                            rapportAthleteHelper.ajouterUnRapportAthlete(tableRapportAthlete);
+
+                            RapportAthlete rapportAthlete = new RapportAthlete(tableRapportAthlete);
+                            try {
+                                rapportAthlete.creeRapport();
+                            } catch (DocumentException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            TableRapportTherapeute tableRapportTherapeute = new TableRapportTherapeute();
+                            tableRapportTherapeute.setNomEcole(atxtNomEcole.getText().toString());
+                            tableRapportTherapeute.setNomEquipe(atxtNomEquipe.getText().toString());
+                            tableRapportTherapeute.setJourEvenement(jourDeLaBlessure/*dpDateDeLaBlessure.getDayOfMonth()*/);
+                            tableRapportTherapeute.setMoisEvenement(moisDeLaBlessure/*dpDateDeLaBlessure.getMonth()*/);
+                            tableRapportTherapeute.setAnneeEvenement(anneeDeLaBlessure/*dpDateDeLaBlessure.getYear()*/);
+                            tableRapportTherapeute.setNomPatient(atxtNomPatient.getText().toString());
+                            tableRapportTherapeute.setPrenomPatient(atxtPrenomPatient.getText().toString());
+                            tableRapportTherapeute.setJourBlessure(jourDeLaBlessure/*dpDateDeLaBlessure.getDayOfMonth()*/);
+                            tableRapportTherapeute.setMoisBlessure(moisDeLaBlessure/*dpDateDeLaBlessure.getMonth()*/);
+                            tableRapportTherapeute.setAnneeBlessure(anneeDeLaBlessure/*dpDateDeLaBlessure.getYear()*/);
+                            tableRapportTherapeute.setJourRetourEntrainement(jourRetourEntrainement/*dpDateDeRetourEntrainement.getDayOfMonth()*/);
+                            tableRapportTherapeute.setMoisRetourEntrainement(moisRetourEntrainement/*dpDateDeRetourEntrainement.getMonth()*/);
+                            tableRapportTherapeute.setAnneeRetourEntrainement(anneeRetourEntrainement/*dpDateDeRetourEntrainement.getYear()*/);
+                            tableRapportTherapeute.setJourRetourJeu(jourRetourJeu/*dpDateRetourJeu.getDayOfMonth()*/);
+                            tableRapportTherapeute.setMoisRetourJeu(moisRetourJeu/*dpDateRetourJeu.getMonth()*/);
+                            tableRapportTherapeute.setAnneeRetourJeu(anneeRetourJeu/*dpDateRetourJeu.getYear()*/);
+                            tableRapportTherapeute.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
+                            tableRapportTherapeute.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
+                            tableRapportTherapeute.setRaffinementMembre(listeRaffinementMembre);
+                            tableRapportTherapeute.setSoapA(soapA.getText().toString());
+                            tableRapportTherapeute.setCommentaire(commentaire.getText().toString());
+
+                            RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(CreerUneBlessureActivity.this);
+                            rapportTherapeuteHelper.ajouterUnRapportTherapeute(tableRapportTherapeute);
+
+                            Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "< " + rapportAthlete.getNomDuRapport() + " > a été généré.", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            ViewGroup group = (ViewGroup) toast.getView();
+                            TextView messageTextView = (TextView) group.getChildAt(0);
+                            messageTextView.setTextColor(Color.WHITE);
+                            messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
+                            messageTextView.setTextSize(36);
+                            toast.show();
+                            finish();
+                        }
+                    });
+
+                    alertDialogBuilder.setNegativeButton("Non",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Aucune sauvegarde a été faite.", Toast.LENGTH_LONG);
+                            ViewGroup group = (ViewGroup) toast.getView();
+                            TextView messageTextView = (TextView) group.getChildAt(0);
+                            messageTextView.setTextSize(24);
+                            messageTextView.setBackgroundColor(Color.GREEN);
+                            messageTextView.setTextColor(Color.WHITE);
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
                     /*
                     Drawable d = getResources().getDrawable(R.drawable.acces_athletique_logo);
                     try {
@@ -848,31 +982,6 @@ public class CreerUneBlessureActivity extends Activity {
                         e.printStackTrace();
                     }
                     */
-                    TableRapportTherapeute tableRapportTherapeute = new TableRapportTherapeute();
-                    tableRapportTherapeute.setNomEcole(atxtNomEcole.getText().toString());
-                    tableRapportTherapeute.setNomEquipe(atxtNomEquipe.getText().toString());
-                    tableRapportTherapeute.setJourEvenement(dpDateDeLaBlessure.getDayOfMonth());
-                    tableRapportTherapeute.setMoisEvenement(dpDateDeLaBlessure.getMonth());
-                    tableRapportTherapeute.setAnneeEvenement(dpDateDeLaBlessure.getYear());
-                    tableRapportTherapeute.setNomPatient(atxtNomPatient.getText().toString());
-                    tableRapportTherapeute.setPrenomPatient(atxtPrenomPatient.getText().toString());
-                    tableRapportTherapeute.setJourBlessure(dpDateDeLaBlessure.getDayOfMonth());
-                    tableRapportTherapeute.setMoisBlessure(dpDateDeLaBlessure.getMonth());
-                    tableRapportTherapeute.setAnneeBlessure(dpDateDeLaBlessure.getYear());
-                    tableRapportTherapeute.setJourRetourEntrainement(dpDateDeRetourEntrainement.getDayOfMonth());
-                    tableRapportTherapeute.setMoisRetourEntrainement(dpDateDeRetourEntrainement.getMonth());
-                    tableRapportTherapeute.setAnneeRetourEntrainement(dpDateDeRetourEntrainement.getYear());
-                    tableRapportTherapeute.setJourRetourJeu(dpDateRetourJeu.getDayOfMonth());
-                    tableRapportTherapeute.setMoisRetourJeu(dpDateRetourJeu.getMonth());
-                    tableRapportTherapeute.setAnneeRetourJeu(dpDateRetourJeu.getYear());
-                    tableRapportTherapeute.setMembreAffecte(sRegionAffectee.getSelectedItem().toString());
-                    tableRapportTherapeute.setPrecisionMembre(sPrecisionSurLaRegionAffectee.getSelectedItem().toString());
-                    tableRapportTherapeute.setRaffinementMembre(listeRaffinementMembre);
-                    tableRapportTherapeute.setSoapA(soapA.getText().toString());
-                    tableRapportTherapeute.setCommentaire(commentaire.getText().toString());
-
-                    RapportTherapeuteHelper rapportTherapeuteHelper = new RapportTherapeuteHelper(CreerUneBlessureActivity.this);
-                    rapportTherapeuteHelper.ajouterUnRapportTherapeute(tableRapportTherapeute);
 
                     /*
                     RapportTherapeute rapportTherapeute = new RapportTherapeute(tableRapportTherapeute);
@@ -906,15 +1015,6 @@ public class CreerUneBlessureActivity extends Activity {
                     liste.add(txtCommentaire.getText().toString());
                     rapportTherapeute.creerRapport();
                     */
-
-                    Toast toast = Toast.makeText(CreerUneBlessureActivity.this, "Les rapports ont été générés.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    ViewGroup group = (ViewGroup) toast.getView();
-                    TextView messageTextView = (TextView) group.getChildAt(0);
-                    messageTextView.setTextColor(Color.WHITE);
-                    messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
-                    messageTextView.setTextSize(36);
-                    toast.show();
                 }
             }
         });

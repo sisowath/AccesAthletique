@@ -76,6 +76,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int jour, mois, annee = 1;
+                String message = "";
                 jour = dpDateDuRapport.getDayOfMonth();
                 mois = dpDateDuRapport.getMonth();
                 annee = dpDateDuRapport.getYear();
@@ -85,6 +86,7 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                 while(curseurSchoolTeamName.moveToNext()) {
                     String nomEcole = curseurSchoolTeamName.getString(curseurSchoolTeamName.getColumnIndex("nomEcole"));
                     String nomEquipe = curseurSchoolTeamName.getString(curseurSchoolTeamName.getColumnIndex("nomEquipe"));
+                    message += jour + "_" + mois + "_" + annee + " - Rapport " + nomEcole + " : " + nomEquipe + ".pdf\n";
                     RapportTherapeute rapportTherapeute = new RapportTherapeute();
                     rapportTherapeute.setNomEcole(nomEcole);
                     rapportTherapeute.setNomEquipe(nomEquipe);
@@ -119,9 +121,8 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     PrintWriter printWriter = new PrintWriter(fileOutputStream);
-                    String message = "";
                     int compteurLignes = 0;
-                    printWriter.println("Nom École, Nom Équipe, Date de l'événement, Nom du patient, Date de la blessure, Date de retour à l'entrainement, Date de retour au jeu, Membre affecté, Précision sur le membre, Raffinement sur le membre, SO(A)P, Commentaire/Recommandations");
+                    printWriter.println("Nom École, Discipline sportive, Date de l'événement, Nom du patient, Date de la blessure, Date de retour à l'entrainement, Date de retour au jeu, Membre affecté, Précision sur le membre, Raffinement sur le membre, SO(A)P, Commentaire/Recommandations");
                     printWriter.flush();
                     do {
                         String nomEcole = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomEcole"));
@@ -138,11 +139,12 @@ public class GenererRapportTherapeuteActivity extends AppCompatActivity {
                         String commentaire = curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("commentaire"));
                         printWriter.println(nomEcole + "," + nomEquipe + "," + dateEvenement + "," + nomPrenomPatient + "," + dateDeLaBlessure + "," + dateRetourEntrainement + "," + dateRetourJeu + "," + membreAffecte + "," + precisionMembre + "," + raffinementMembre + "," + soapA + "," + commentaire);
                         printWriter.flush();
-                        message += curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("id")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomPatient")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("prenomPatient")) + "\n";
+                        //message += curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("id")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("nomPatient")) + " :: " + curseurRapportTherapeute.getString(curseurRapportTherapeute.getColumnIndex("prenomPatient")) + "\n";
                         compteurLignes++;
                     }while(curseurRapportTherapeute.moveToNext());
+                    message += jour + "_" + mois + "_" + annee + " - CSV";
                     printWriter.close();
-                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, "BRAVO ! " + compteurLignes + " blessure(s) a été bien enregistré jusqu'à le " + jour + "/" + mois + "/" + annee /*+ " - \n" + message*/, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(GenererRapportTherapeuteActivity.this, message + " ont été créés.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     ViewGroup group = (ViewGroup) toast.getView();
                     TextView messageTextView = (TextView) group.getChildAt(0);

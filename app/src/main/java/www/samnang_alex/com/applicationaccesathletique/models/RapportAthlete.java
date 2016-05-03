@@ -153,7 +153,7 @@ public class RapportAthlete {
         document.add(phraseCoordonneesDuPatient);
         document.add(new Chunk("\nNom du patient : ", mesSousTitres));
         document.add(new Chunk(this.nomDuPatient + ", " + this.prenomDuPatient, FONTNORMALUNDERLINED));
-        document.add(new Chunk("\nÉquipe : ", mesSousTitres));
+        document.add(new Chunk("\nDiscipline sportive : ", mesSousTitres));
         document.add(new Chunk(this.nomEquipe, FONTNORMALUNDERLINED));
         document.add(new Chunk("\nÉcole : ", mesSousTitres));
         document.add(new Chunk(this.nomEcole, FONTNORMALUNDERLINED));
