@@ -572,8 +572,8 @@ public class CreerUneBlessureActivity extends Activity {
                     atxtNumeroJoueur.requestFocus();
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreerUneBlessureActivity.this);
+                    alertDialogBuilder.setTitle("Avertissement");
                     alertDialogBuilder.setMessage("Attention ! Êtes-vous sûr de vouloir sauvegarder le rapport ?");
-
                     alertDialogBuilder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
@@ -667,7 +667,7 @@ public class CreerUneBlessureActivity extends Activity {
                             TextView messageTextView = (TextView) group.getChildAt(0);
                             messageTextView.setTextColor(Color.WHITE);
                             messageTextView.setBackgroundColor(Color.parseColor("#66e166"));
-                            messageTextView.setTextSize(36);
+                            messageTextView.setTextSize(24);
                             toast.show();
                             finish();
                         }
