@@ -5,9 +5,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
+import android.view.Gravity;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 
 import www.samnang_alex.com.applicationaccesathletique.models.RapportTherapeute;
 import www.samnang_alex.com.applicationaccesathletique.models.TableRapportTherapeute;
+import www.samnang_alex.com.applicationaccesathletique.views.ImportExportDB;
 
 public class RapportTherapeuteHelper extends SQLiteOpenHelper {
 
@@ -36,9 +47,12 @@ public class RapportTherapeuteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_RAFFINEMENTMEMBRE = "raffinementMembre";
     public static final String COLUMN_SOAPA = "soapA";
     public static final String COLUMN_COMMENTAIRE = "commentaire";
+    public String DB_FILEPATH;
 
     public RapportTherapeuteHelper(Context context) {
         this(context, null, null, 1);
+        final String packageName = context.getPackageName();
+        DB_FILEPATH = "/data/data/" + packageName + "/databases/MesRapportsTherapeutes.db";
     }
     public RapportTherapeuteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -131,5 +145,99 @@ public class RapportTherapeuteHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_JOUREVENEMENT + " = " + jour + " AND " + COLUMN_MOISEVENEMENT + " = " + mois + " AND " + COLUMN_ANNEEEVENEMENT + " = " + annee, null);
         //db.close();
         return cursor;
+    }
+
+    // IMPORT
+    public boolean importDatabase() throws IOException {
+
+        // Close the SQLiteOpenHelper so it will
+        // commit the created empty database to internal storage.
+        close();
+        File newDb = new File(Environment.getExternalStorageDirectory() + "/AccesAthletique/Import/MesRapportsTherapeutes_bak.db");
+        File oldDb = new File(DB_FILEPATH);
+        if (newDb.exists()) {
+            copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
+            // Access the copied database so SQLiteHelper
+            // will cache it and mark it as created.
+            getWritableDatabase().close();
+            return true;
+        }
+        return false;
+    }
+    public boolean restoreDatabase() throws IOException {
+
+        // Close the SQLiteOpenHelper so it will
+        // commit the created empty database to internal storage.
+        close();
+        File newDb = new File(Environment.getExternalStorageDirectory() + "/AccesAthletique/Backup/MesRapportsTherapeutes_bak.db");
+        File oldDb = new File(DB_FILEPATH);
+        if (newDb.exists()) {
+            copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
+            // Access the copied database so SQLiteHelper
+            // will cache it and mark it as created.
+            getWritableDatabase().close();
+            return true;
+        }
+        return false;
+    }
+    private void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
+        FileChannel fromChannel = null;
+        FileChannel toChannel = null;
+        try {
+            fromChannel = fromFile.getChannel();
+            toChannel = toFile.getChannel();
+            fromChannel.transferTo(0, fromChannel.size(), toChannel);
+        } finally {
+            try {
+                if (fromChannel != null) {
+                    fromChannel.close();
+                }
+            } finally {
+                if (toChannel != null) {
+                    toChannel.close();
+                }
+            }
+        }
+    }
+    public void backupDatabase() throws IOException {
+
+        if (isSDCardWriteable()) {
+            File direct = new File(Environment.getExternalStorageDirectory() + "/AccesAthletique/Backup");
+            if(!direct.exists())
+            {
+                if(direct.mkdir())
+                {
+                    //directory is created;
+                }
+
+            }
+            // Open your local db as the input stream
+            String inFileName = DB_FILEPATH;
+            File dbFile = new File(inFileName);
+            FileInputStream fis = new FileInputStream(dbFile);
+
+            String outFileName = Environment.getExternalStorageDirectory() + "/AccesAthletique/Backup/MesRapportsTherapeutes_bak.db";
+            // Open the empty db as the output stream
+            OutputStream output = new FileOutputStream(outFileName);
+            // transfer bytes from the inputfile to the outputfile
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+            // Close the streams
+            output.flush();
+            output.close();
+            fis.close();
+        }
+    }
+
+    private boolean isSDCardWriteable() {
+        boolean rc = false;
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            rc = true;
+        }
+        return rc;
     }
 }

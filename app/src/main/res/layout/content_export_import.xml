@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Attention, en utilisant cette fonction vous pouvez perdre tous vos données.  Assurez-vous de bien faire une sauvegarde de votre base de données exporter avant toutes tentatives!"
+            android:id="@+id/textView5"
+            android:textColor="#ff0000"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:background="#edd9d9" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:text="Exporter une base de données"
+            android:id="@+id/btnExport"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:text="Importer une base de données"
+            android:id="@+id/btnImport"
+            android:textStyle="bold"
+            android:textSize="18dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:text="Restorer votre base de données"
+            android:id="@+id/btnRestore"
+            android:textStyle="bold"
+            android:textSize="18dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnHelp"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:background="@android:drawable/ic_menu_help"
+            android:allowUndo="false"
+            android:clickable="true"
+            android:longClickable="false"
+            android:layout_gravity="center_horizontal" />
+
+    </GridLayout>
+
+</LinearLayout>

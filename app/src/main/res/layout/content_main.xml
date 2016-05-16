@@ -15,92 +15,108 @@
 
         <ImageView
             android:id="@+id/imgLogo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:textAlignment="center"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_marginTop="50px" />
 
-        <TextView
-            android:id="@+id/lblCoordonneesEntreprise"
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:gravity="center"/>
+            android:layout_height="match_parent"
+            android:columnCount="1"
+            android:layout_marginBottom="5px">
 
-        <Button
-            android:id="@+id/btnCreerUneBlessure"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:text="Créer une blessure"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textAllCaps="false"/>
+            <TextView
+                android:id="@+id/lblCoordonneesEntreprise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:gravity="center"/>
 
-        <Button
-            android:id="@+id/btnAjouterUnEvenement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:text="Ajouter un événement"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btnCreerUneBlessure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Créer une blessure"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
 
-        <Button
-            android:id="@+id/btnGenererRapportPDF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:text="Générer un rapport d'école"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btnAjouterUnEvenement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ajouter un événement"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
 
-        <Button
-            android:id="@+id/btnGestionDeLaBD"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:text="Gestion de la BD"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btnGenererRapportPDF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Générer un rapport d'école"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
 
-        <Button
-            android:id="@+id/btnGenererCSV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:text="Générer fichier CSV"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btnGenererCSV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Générer fichier CSV"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
 
-        <Button
-            android:id="@+id/btnResetDatabase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:text="Réinitialiser la BD"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btnResetDatabase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Réinitialiser la BD"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
+
+            <Button
+                android:id="@+id/btnGestionDeLaBD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gestion de la BD"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
+
+            <Button
+                android:id="@+id/btnDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Export/Import"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
+
+            <Button
+                android:id="@+id/btnAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="À propos"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textAllCaps="false"
+                android:layout_marginTop="5px" />
+
+        </GridLayout>
 
     </LinearLayout>
 </ScrollView>

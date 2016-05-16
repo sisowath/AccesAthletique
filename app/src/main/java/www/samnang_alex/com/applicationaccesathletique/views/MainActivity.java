@@ -46,6 +46,8 @@ public class MainActivity extends Activity {
     Button btnGestionDeLaBD;
     Button btnGenererCSV;
     Button btnResetDatabase;
+    Button btnAbout;
+    Button btnDB;
     TextView lblCopyrightSamnang;
 
     public static final Font BOLD_UNDERLINED = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD | Font.UNDERLINE);
@@ -219,6 +221,26 @@ public class MainActivity extends Activity {
                         toast.show();
                     }
                 }).show();
+            }
+        });
+        btnAbout = (Button) findViewById(R.id.btnAbout);
+        btnAbout.setBackgroundColor(Color.parseColor("#0080ff"));
+        btnAbout.setTextColor(Color.WHITE);
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnDB = (Button) findViewById(R.id.btnDB);
+        btnDB.setBackgroundColor(Color.parseColor("#0080ff"));
+        btnDB.setTextColor(Color.WHITE);
+        btnDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ImportExportDB.class);
+                startActivity(intent);
             }
         });
         Display display = getWindowManager().getDefaultDisplay();
